@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import type { Project } from "@/lib/types";
 import { MagneticLink } from "@/components/magnetic-link";
-import { services } from "@/lib/site";
+import { services } from "@/lib/services";
 
 const reveal = { hidden: { opacity: 0, y: 32 }, visible: { opacity: 1, y: 0 } };
 

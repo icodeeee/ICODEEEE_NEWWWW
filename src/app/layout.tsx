@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./studio.css";
 import "./project-imagery.css";
+import "./services.css";
 import { SiteHeader } from "@/components/site-header";
 import { Footer } from "@/components/footer";
 

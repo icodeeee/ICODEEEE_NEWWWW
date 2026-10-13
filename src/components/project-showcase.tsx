@@ -20,13 +20,15 @@ export function ProjectShowcase({ project, index, preview, onPreview }: { projec
     return () => observer.disconnect();
   }, []);
   const host = project.live_url ? new URL(project.live_url).hostname.replace(/^www\./, "") : "Selected project";
-  return <article className={`real-project ${project.slug === "slugsera" ? "real-fashion" : "real-architecture"}`}>
-    <div className="real-project-top"><p className="film-label">0{index + 1} / {project.category}</p><span><i /> LIVE PROJECT</span></div>
+  return <article className={`real-project ${visual.theme ? `real-${visual.theme}` : ""}`}>
+    <div className="real-project-top"><p className="film-label">{String(index + 1).padStart(2, "0")} / {visual.theme === "site" ? project.name : project.category}</p><span><i /> LIVE PROJECT</span></div>
     <div ref={frameRef} className={`real-project-visual ${preview ? "is-preview" : ""}`} style={{ "--site-scale": scale } as CSSProperties}>
       {preview && project.live_url ? <><div className="preview-loading" role="status">{loaded ? "Live website preview" : "Opening the live website…"}</div><div className="preview-canvas" inert><iframe src={project.live_url} title={`${project.name} live website preview`} sandbox="allow-scripts allow-same-origin" tabIndex={-1} onLoad={() => setLoaded(true)} /></div></> : <Link href={`/work/${project.slug}`} className="real-project-image" aria-label={`Explore ${project.name}`}>
         {visual.image ? <Image src={visual.image} alt={visual.alt} fill sizes="(max-width: 760px) 100vw, 86vw" /> : <span className="project-image-fallback">{project.name}</span>}
-        <span className="real-project-title">{project.name}<ArrowUpRight strokeWidth={1} /></span>
-        <span className="project-image-caption">{project.slug === "slugsera" ? "CAMPAIGN / DIGITAL COMMERCE" : "PORTFOLIO / DIGITAL EXPERIENCE"}</span>
+        {/* A capture of the live site already carries the brand name, so overlaying
+            the project title on top just collides with the page's own wordmark. */}
+        {visual.theme !== "site" && <span className="real-project-title">{project.name}<ArrowUpRight strokeWidth={1} /></span>}
+        <span className="project-image-caption">{visual.label}</span>
       </Link>}
       <div className="real-browser-bar"><span className="browser-dots" aria-hidden="true"><i /><i /><i /></span><span>{host}</span>{project.live_url && <button type="button" onClick={() => { setLoaded(false); onPreview(); }} aria-expanded={preview} aria-label={preview ? `Close ${project.name} preview` : `Preview ${project.name} website`}>{preview ? <><X size={14} /> Close preview</> : <><Globe size={14} /> Preview website</>}</button>}</div>
     </div>

@@ -31,12 +31,15 @@ export const projectFallback: Project[] = [
     gallery: [], video: null, services: [], technologies: [], live_url: "https://rupaliconstruction.com",
     case_study_content: {}, published: true, order: 2,
   },
-];
-
-export const services = [
-  { number: "01", slug: "website-development", name: "Website Development", line: "Fast, responsive websites designed around business goals.", items: ["Marketing websites", "Custom web applications", "Performance & SEO"] },
-  { number: "02", slug: "ecommerce-setup", name: "Ecommerce Setup", line: "A complete storefront built to make buying simple.", items: ["Store setup & catalog", "Payments & checkout", "Analytics & integrations"] },
-  { number: "03", slug: "ui-ux-design", name: "UI / UX Design", line: "Useful digital experiences that feel clear from the first click.", items: ["User journeys", "Wireframes & prototypes", "Interface design systems"] },
-  { number: "04", slug: "content-strategy", name: "Content Strategy", line: "A sharper message and a practical plan for what to say next.", items: ["Brand voice & messaging", "Content planning", "Conversion copy"] },
-  { number: "05", slug: "graphic-design", name: "Graphic Design", line: "Distinctive visual work across every place your brand appears.", items: ["Logos & identity", "Clothing & packaging", "Campaigns & AI mockups"] },
+  {
+    id: "aesthetic-wear",
+    slug: "aesthetic-wear",
+    name: "Awaesthetic Wear",
+    category: "Ecommerce",
+    short_description: "A WooCommerce storefront for a streetwear label, organised around graphic apparel.",
+    description: "Awaesthetic Wear sells graphic hoodies, sweatshirts and varsity jackets for men and women. We built the storefront so the collections, sizing and checkout are easy to move through on mobile.",
+    cover_image: null,
+    gallery: [], video: null, services: [], technologies: [], live_url: "https://awaestheticwear.com",
+    case_study_content: {}, published: true, order: 3,
+  },
 ];
