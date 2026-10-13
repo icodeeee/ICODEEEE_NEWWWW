@@ -66,9 +66,9 @@ export const services: Service[] = [
     projectType: "Website or web product",
     eyebrow: "Service 01 / Engineering",
     intro:
-      "A website should be the easiest thing you own. We build fast, accessible, genuinely mobile-first sites — structured so search engines understand them and so your team can change them without calling a developer.",
+      "The easiest thing you own. Fast, mobile-first and structured so your team can update it without a developer.",
     bestFor:
-      "Founders and teams who need a credible online presence, are replacing something that no longer reflects the business, or need a site that converts enquiries rather than just existing.",
+      "Teams replacing a site that no longer reflects the business, or needing one that turns visitors into enquiries.",
     approach: [
       {
         title: "Structure before style",
@@ -139,9 +139,9 @@ export const services: Service[] = [
     projectType: "Ecommerce store",
     eyebrow: "Service 02 / Commerce",
     intro:
-      "A store that is hard to buy from is a store that does not exist. We build storefronts where finding a product, trusting the brand and completing checkout are all fast, clear and reassuring — on mobile, where most of your sales will happen.",
+      "A store that is hard to buy from does not exist. Finding, trusting and paying should all be fast and clear.",
     bestFor:
-      "Fashion, lifestyle and product brands selling direct, and retailers moving off a marketplace or onto a platform they do not control.",
+      "Fashion and lifestyle brands selling direct, and retailers moving off a marketplace.",
     approach: [
       {
         title: "Catalogue architecture first",
@@ -212,9 +212,9 @@ export const services: Service[] = [
     projectType: "UI / UX design",
     eyebrow: "Service 03 / Product design",
     intro:
-      "We design the experience before we design the screen. Journeys, wireframes and prototypes first — so the interface is solving a real problem rather than decorating a wireframe of one.",
+      "We design the experience before the screen. Journeys and prototypes first, so the interface solves a real problem.",
     bestFor:
-      "Teams building a product, an app or a complex booking or customer flow, and anyone whose existing interface is confusing users or leaking conversions.",
+      "Teams building a product, and anyone whose interface confuses users or leaks conversions.",
     approach: [
       {
         title: "Understand the actual user",
@@ -285,9 +285,9 @@ export const services: Service[] = [
     projectType: "Content strategy",
     eyebrow: "Service 04 / Messaging",
     intro:
-      "Most websites are unclear because nobody decided what they were trying to say. We define the message, the voice and the plan — then write the words that make people act.",
+      "Most sites are unclear because nobody decided what to say. We define the message, then write it.",
     bestFor:
-      "Businesses that have outgrown their original positioning, are launching something new, or have plenty of content that simply isn't working.",
+      "Businesses outgrowing their positioning, or with content that isn't working.",
     approach: [
       {
         title: "Say one thing well",
@@ -358,9 +358,9 @@ export const services: Service[] = [
     projectType: "Graphic design",
     eyebrow: "Service 05 / Brand & print",
     intro:
-      "A brand should look like itself everywhere — on screen, on a garment, on a box. We build identity systems that hold together across every format you actually use.",
+      "A brand should look like itself everywhere — screen, garment, box. We build identities that hold across formats.",
     bestFor:
-      "Apparel and lifestyle brands, businesses rebranding, and anyone whose identity no longer matches how good their work has become.",
+      "Apparel and lifestyle brands, and anyone whose identity no longer matches their work.",
     approach: [
       {
         title: "Start from what makes you different",

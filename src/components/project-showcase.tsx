@@ -1,47 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Globe, X } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/types";
 import { getProjectVisual } from "@/lib/project-visuals";
 
-export function ProjectShowcase({ project, index, preview, onPreview }: { project: Project; index: number; preview: boolean; onPreview: () => void }) {
+/**
+ * Compact portfolio card.
+ *
+ * Deliberately one action per card. Previously each card carried a fake browser
+ * bar with a preview control, a "Visit website" button and an "Explore the
+ * project" link — four ways to leave the page, which read as clutter. The card
+ * itself now goes to the case study, with the live site as one quiet link.
+ */
+export function ProjectShowcase({ project, index }: { project: Project; index: number }) {
   const visual = getProjectVisual(project);
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(.7);
-  const [loaded, setLoaded] = useState(false);
-  // The first cover is the largest contentful paint on this page.
-  const isFirst = index === 0;
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-    const observer = new ResizeObserver(([entry]) => setScale(entry.contentRect.width / 1440));
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, []);
-  const host = project.live_url ? new URL(project.live_url).hostname.replace(/^www\./, "") : "Selected project";
-  return <article className={`real-project ${visual.theme ? `real-${visual.theme}` : ""}`}>
-    <div className="real-project-top"><p className="film-label">{String(index + 1).padStart(2, "0")} / {visual.theme === "site" ? project.name : project.category}</p><span><i /> LIVE PROJECT</span></div>
-    <div ref={frameRef} className={`real-project-visual ${preview ? "is-preview" : ""}`} style={{ "--site-scale": scale } as CSSProperties}>
-      {preview && project.live_url ? <><div className="preview-loading" role="status">{loaded ? "Live website preview" : "Opening the live website…"}</div><div className="preview-canvas" inert><iframe src={project.live_url} title={`${project.name} live website preview`} sandbox="allow-scripts allow-same-origin" tabIndex={-1} onLoad={() => setLoaded(true)} /></div></> : <Link href={`/work/${project.slug}`} className="real-project-image">
-        {visual.image ? <Image src={visual.image} alt={visual.alt} fill priority={isFirst} sizes="(max-width: 760px) 100vw, 86vw" /> : <span className="project-image-fallback">{project.name}</span>}
-        {/* A capture of the live site already carries the brand name, so overlaying
-            the project title on top just collides with the page's own wordmark. */}
-        {visual.theme !== "site" && <span className="real-project-title">{project.name}<ArrowUpRight strokeWidth={1} /></span>}
-        <span className="project-image-caption">{visual.label}</span>
-      </Link>}
-      <div className="real-browser-bar"><span className="browser-dots" aria-hidden="true"><i /><i /><i /></span><span>{host}</span>{project.live_url && <button type="button" onClick={() => { setLoaded(false); onPreview(); }} aria-expanded={preview} aria-label={`${preview ? "Close preview" : "Preview website"} — ${project.name}`}>{preview ? <><X size={14} /> Close preview</> : <><Globe size={14} /> Preview website</>}</button>}</div>
-    </div>
-    <div className="real-project-bottom"><div><h3>{visual.caption}</h3><p>{project.short_description}</p></div><div className="real-project-actions">{project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="film-button">Visit website <ArrowUpRight size={17} /></a>}<Link href={`/work/${project.slug}`} className="film-text-link">Explore the project <ArrowUpRight size={16} /></Link></div></div>
-    {preview && <p className="preview-note">A live look at {project.name}. Open the website to explore the complete experience.</p>}
+  const host = project.live_url ? new URL(project.live_url).hostname.replace(/^www\./, "") : "";
+
+  return <article className="work-card-tile">
+    <Link href={`/work/${project.slug}`} className="work-tile-link">
+      <span className="work-tile-visual">
+        {visual.image
+          ? <Image src={visual.image} alt={visual.alt} fill sizes="(max-width: 900px) 100vw, 33vw" />
+          : <span className="project-image-fallback">{project.name}</span>}
+      </span>
+      <span className="work-tile-body">
+        <span className="work-tile-head">
+          <b>{project.name}</b>
+          <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
+        </span>
+        <span className="work-tile-caption">{visual.caption}</span>
+      </span>
+    </Link>
+    {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="work-tile-live">{host}</a>}
   </article>;
 }
 
 export function ProjectCollection({ projects }: { projects: Project[] }) {
-  const [activePreview, setActivePreview] = useState<string | null>(null);
-  // Each project card is an h3. Without a heading above them the sequence skips
-  // h2 on pages where this list is the main content (e.g. /work).
-  return <section aria-labelledby="selected-projects-heading"><h2 id="selected-projects-heading" className="film-sr">Selected projects</h2><div className="real-projects">{projects.map((project, index) => <ProjectShowcase key={project.id} project={project} index={index} preview={activePreview === project.id} onPreview={() => setActivePreview(activePreview === project.id ? null : project.id)} />)}</div></section>;
+  return <section aria-labelledby="selected-projects-heading">
+    <h2 id="selected-projects-heading" className="film-sr">Selected projects</h2>
+    <div className="real-projects">{projects.map((project, index) => <ProjectShowcase key={project.id} project={project} index={index} />)}</div>
+  </section>;
 }
