@@ -20,3 +20,56 @@
 @media(max-width:760px){.hero-project-collage{position:relative;right:auto;top:auto;width:80%;height:400px;margin:65px auto 45px;max-height:none}.collage-note{font-size:6px;left:4%;top:-25px}.collage-rupali{right:-1%;width:70%;height:79%}.collage-slugsera{left:-4%;width:76%;height:84%}.collage-slugsera>b{font-size:34px;bottom:20px;left:14px}.collage-project>span{font-size:7px;left:10px;right:10px;top:11px}.collage-polaroid{right:-4%;width:37%;bottom:0;padding:6px 6px 0}.collage-polaroid>span{font-size:5px;padding:10px 0}.collage-seal{width:66px;height:66px;left:-13%;bottom:8%;font-size:5px;gap:4px}.collage-seal svg{width:28px;height:28px}.real-projects{gap:55px;margin:35px 0 55px}.real-project-top{gap:8px}.real-project-top .film-label{font-size:8px}.real-project-top>span{font-size:7px}.real-project-visual{aspect-ratio:1/.96}.real-project-visual.is-preview{aspect-ratio:16/11}.real-project-image{inset:42px 0 0}.real-project-title{top:22px;left:19px;right:19px;font-size:35px;line-height:1.05}.real-project-title>svg{width:28px;height:28px}.real-browser-bar{padding:0 9px;gap:8px;font-size:8px}.browser-dots{gap:3px}.browser-dots i{width:4px;height:4px}.real-browser-bar button{padding:0 0 0 9px;font-size:8px;gap:5px;min-height:42px}.real-browser-bar button svg{width:12px}.project-image-caption{left:19px;bottom:18px;font-size:7px}.real-project-bottom{flex-direction:column;gap:20px;padding-top:22px}.real-project-bottom h3{font-size:26px}.real-project-bottom p{font-size:12px}.real-project-actions{flex-direction:row;align-items:center;gap:18px;flex-wrap:wrap}.real-project-actions .film-button{padding:13px 18px;font-size:10px;gap:15px}.real-project-actions .film-text-link{font-size:10px}.contact-sheet-images{grid-template-columns:1fr;gap:40px;margin:45px auto 30px;width:87%}.contact-sheet-images>div:nth-child(2),.contact-sheet-images>div:nth-child(3){padding-top:0}.contact-sheet-image{aspect-ratio:1}.contact-sheet-images a>span{font-size:8px}.contact-sheet-foot{line-height:1.8;margin-top:40px!important}.case-cover{aspect-ratio:1}.case-gallery{padding:30px 6vw;grid-template-columns:1fr;gap:28px}.case-gallery figure>div{aspect-ratio:1}}
 @media(max-width:360px){.hero-project-collage{height:330px}.collage-slugsera>b{font-size:28px}.real-project-title{font-size:29px}.real-project-top>span{font-size:6px}.real-browser-bar{font-size:7px}.real-browser-bar button{font-size:7px}}
 @media(prefers-reduced-motion:reduce){.hero-project-collage,.contact-sheet-images>div{transform:none!important}.collage-seal svg{animation:none}}
+
+/* ------------------------------------------------------------------
+   Hero collage: hovered card comes forward and highlights, the rest
+   recede. Base rotations are re-declared as custom properties so the
+   hover transform can compose with the rotation instead of replacing it.
+   ------------------------------------------------------------------ */
+.collage-rupali{--rot:16deg;transform:rotate(var(--rot))}
+.collage-slugsera{--rot:-5deg;transform:rotate(var(--rot))}
+.collage-polaroid{--rot:15deg;transform:rotate(var(--rot))}
+
+/* Only devices that genuinely support hover get the lift; this stops the
+   effect sticking after a tap on touch screens. */
+@media (hover:hover) and (prefers-reduced-motion: no-preference){
+  .collage-project,.collage-polaroid{
+    transition:transform .55s cubic-bezier(.22,1,.36,1), box-shadow .45s ease, filter .4s ease;
+  }
+
+  .collage-project:hover,.collage-project:focus-visible{
+    transform:rotate(var(--rot)) translateY(-12px) scale(1.05);
+    z-index:20;
+    box-shadow:0 42px 74px #071d3552;
+    filter:saturate(1.1) contrast(1.05);
+  }
+  .collage-slugsera:hover,.collage-slugsera:focus-visible{
+    transform:rotate(calc(var(--rot) * .4)) translateY(-12px) scale(1.05);
+  }
+
+  .collage-polaroid:hover,.collage-polaroid:focus-visible{
+    transform:rotate(calc(var(--rot) - 10deg)) translateY(-14px) scale(1.06);
+    z-index:20;
+    box-shadow:0 32px 58px #071d3548;
+  }
+
+  /* When one card is active, push the others back. */
+  .hero-project-collage:has(.collage-project:hover,.collage-polaroid:hover) :is(.collage-project,.collage-polaroid):not(:hover){
+    filter:saturate(.7) opacity(.74);
+  }
+  .hero-project-collage:has(.collage-project:hover,.collage-polaroid:hover) .collage-seal{
+    filter:opacity(.55);
+  }
+}
+
+/* Reduced motion: no movement, but the highlight still reads. */
+@media (hover:hover) and (prefers-reduced-motion: reduce){
+  .collage-project:hover,.collage-project:focus-visible,.collage-polaroid:hover,.collage-polaroid:focus-visible{
+    z-index:20;box-shadow:0 30px 60px #071d3540;filter:saturate(1.08);
+  }
+  .hero-project-collage:has(.collage-project:hover,.collage-polaroid:hover) :is(.collage-project,.collage-polaroid):not(:hover){
+    filter:saturate(.75) opacity(.8);
+  }
+}
+
+.collage-project:focus-visible,.collage-polaroid:focus-visible{outline:2px solid var(--cherry);outline-offset:4px}
