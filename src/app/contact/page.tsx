@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
+import { contact, hasPhone, hasWhatsApp, phoneHref, whatsappHref } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Let’s Talk", description: "Tell iCodeee what you’re building." };
+export const metadata = pageMetadata({ title: "Let’s Talk", description: "Tell iCodeee what you’re building.", path: "/contact" });
 
 function read(value: string | string[] | undefined): string {
   if (Array.isArray(value)) return value[0] ?? "";
@@ -32,5 +34,31 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
     }
   }
 
-  return <main id="main" className="contact-page"><section className="contact-intro"><p className="eyebrow">Start a conversation</p><h1>BUILD SOMETHING<br /><span>WORTH NOTICING.</span></h1><p>Give us the useful version. The goal, the challenge, and where you want it to go.</p></section><section className="contact-shell">{rawEstimate && <p className="contact-prefill-note">We&apos;ve carried your estimate over. Adjust anything below, or just add your brief.</p>}<ContactForm defaults={{ projectType, message }} /></section></main>;
+  return <main id="main" className="contact-page">
+    <section className="contact-intro">
+      <p className="eyebrow">Start a conversation</p>
+      <h1>BUILD SOMETHING<br /><span>WORTH NOTICING.</span></h1>
+      <p>Give us the useful version. The goal, the challenge, and where you want it to go.</p>
+      {/* Always-visible direct routes. These are the fallback if the form backend is
+          unavailable, so they must not be conditional on form state. */}
+      <div className="contact-direct">
+        <a href={`mailto:${contact.email}`} className="contact-direct-link">
+          <Mail size={17} strokeWidth={2} aria-hidden="true" />
+          <span><b>Email</b>{contact.email}</span>
+        </a>
+        {hasPhone && <a href={phoneHref} className="contact-direct-link">
+          <Phone size={17} strokeWidth={2} aria-hidden="true" />
+          <span><b>Call</b>{contact.phone}</span>
+        </a>}
+        {hasWhatsApp && <a href={whatsappHref} target="_blank" rel="noreferrer" className="contact-direct-link">
+          <MessageCircle size={17} strokeWidth={2} aria-hidden="true" />
+          <span><b>WhatsApp</b>{contact.whatsapp}</span>
+        </a>}
+      </div>
+    </section>
+    <section className="contact-shell">
+      {rawEstimate && <p className="contact-prefill-note">We&apos;ve carried your estimate over. Adjust anything below, or just add your brief.</p>}
+      <ContactForm defaults={{ projectType, message }} />
+    </section>
+  </main>;
 }

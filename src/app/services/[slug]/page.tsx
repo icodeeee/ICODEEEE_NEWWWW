@@ -5,6 +5,7 @@ import { ArrowUpRight, Check, Minus } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { ServiceEstimator } from "@/components/service-estimator";
 import { getService, moneyRange, services } from "@/lib/services";
+import { pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -18,11 +19,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const service = getService((await params).slug);
   if (!service) return { title: "Service" };
   const range = service.options.map((o) => moneyRange(o.from, o.to)).join(" · ");
-  return {
+  return pageMetadata({
     title: service.name,
     description: `${service.intro} Indicative ranges ${range}.`,
-    alternates: { canonical: `/services/${service.slug}` },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 export default async function ServiceDetail({ params }: { params: Promise<{ slug: string }> }) {

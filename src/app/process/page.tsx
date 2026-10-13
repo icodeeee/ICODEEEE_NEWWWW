@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/page-hero";
-export const metadata: Metadata = { title: "Process", description: "The iCodeee method: Engineer, Elevate, Evolve." };
+export const metadata = pageMetadata({ title: "Process", description: "The iCodeee method: Engineer, Elevate, Evolve.", path: "/process" });
 const stages = [["01", "Idea", "Find the useful problem, not just the requested deliverable."], ["02", "Strategy", "Choose the position, priorities and system before the pixels."], ["03", "Design", "Make the experience clear, distinctive and worth returning to."], ["04", "Engineering", "Build the underlying architecture with the same attention to detail."], ["05", "Evolution", "Launch, learn and improve what the business needs next."]];
 export default function Process() { return <main id="main" className="page-main"><PageHero eyebrow="How we work" title="ENGINEER. ELEVATE. EVOLVE.">One connected method, from first thought to the version that comes next.</PageHero><section className="content-section dark"><div className="process-list">{stages.map(([number, name, text]) => <article key={number}><span>{number}</span><h2>{name}</h2><p>{text}</p></article>)}</div></section></main>; }

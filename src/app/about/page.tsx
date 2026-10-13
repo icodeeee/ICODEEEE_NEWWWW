@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/page-hero";
-export const metadata: Metadata = { title: "About", description: "Why iCodeee exists." };
+export const metadata = pageMetadata({ title: "About", description: "Why iCodeee exists.", path: "/about" });
 export default function About() { return <main id="main" className="page-main"><PageHero eyebrow="Why we exist" title="DON’T HIRE ANOTHER VENDOR.">Businesses need someone who can think with them — across brand, digital and AI — as one accountable system.</PageHero><section className="content-section about-copy"><h2>THE PARTS THAT<br /><span>MATTER, CONNECTED.</span></h2><p>iCodeee is an independent digital studio for founders and teams who want more than a surface-level launch. We bring strategic thinking, visual craft and technical depth into the same room.</p><p>That means fewer handoffs, fewer lost details, and a system designed to keep evolving with the business.</p></section></main>; }

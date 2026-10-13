@@ -5,8 +5,34 @@ export const navItems = [
   ["Services", "/services"],
   ["Process", "/process"],
   ["About", "/about"],
-  ["Resources", "/resources"],
+  ["Privacy", "/privacy"],
 ] as const;
+
+/**
+ * Direct contact routes, shown alongside the enquiry form so a visitor always has
+ * a way to reach the studio — including when the form backend is unavailable.
+ *
+ * Phone and WhatsApp are env-driven and render only when set, because publishing
+ * an unverified number would be worse than publishing none. The email address is
+ * the one already used in the footer.
+ */
+export const contact = {
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@icodeee.com",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+  whatsapp: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || "",
+  location: process.env.NEXT_PUBLIC_CONTACT_LOCATION || "",
+};
+
+export const hasPhone = Boolean(contact.phone);
+export const hasWhatsApp = Boolean(contact.whatsapp);
+
+/** Digits-only phone number, for tel: and wa.me links. */
+function dialDigits(value: string) {
+  return value.replace(/[^\d+]/g, "");
+}
+
+export const phoneHref = hasPhone ? `tel:${dialDigits(contact.phone)}` : "";
+export const whatsappHref = hasWhatsApp ? `https://wa.me/${dialDigits(contact.whatsapp).replace(/^\+/, "")}` : "";
 
 export const projectFallback: Project[] = [
   {

@@ -12,6 +12,8 @@ export function ProjectShowcase({ project, index, preview, onPreview }: { projec
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(.7);
   const [loaded, setLoaded] = useState(false);
+  // The first cover is the largest contentful paint on this page.
+  const isFirst = index === 0;
   useEffect(() => {
     const frame = frameRef.current;
     if (!frame) return;
@@ -23,14 +25,14 @@ export function ProjectShowcase({ project, index, preview, onPreview }: { projec
   return <article className={`real-project ${visual.theme ? `real-${visual.theme}` : ""}`}>
     <div className="real-project-top"><p className="film-label">{String(index + 1).padStart(2, "0")} / {visual.theme === "site" ? project.name : project.category}</p><span><i /> LIVE PROJECT</span></div>
     <div ref={frameRef} className={`real-project-visual ${preview ? "is-preview" : ""}`} style={{ "--site-scale": scale } as CSSProperties}>
-      {preview && project.live_url ? <><div className="preview-loading" role="status">{loaded ? "Live website preview" : "Opening the live website…"}</div><div className="preview-canvas" inert><iframe src={project.live_url} title={`${project.name} live website preview`} sandbox="allow-scripts allow-same-origin" tabIndex={-1} onLoad={() => setLoaded(true)} /></div></> : <Link href={`/work/${project.slug}`} className="real-project-image" aria-label={`Explore ${project.name}`}>
-        {visual.image ? <Image src={visual.image} alt={visual.alt} fill sizes="(max-width: 760px) 100vw, 86vw" /> : <span className="project-image-fallback">{project.name}</span>}
+      {preview && project.live_url ? <><div className="preview-loading" role="status">{loaded ? "Live website preview" : "Opening the live website…"}</div><div className="preview-canvas" inert><iframe src={project.live_url} title={`${project.name} live website preview`} sandbox="allow-scripts allow-same-origin" tabIndex={-1} onLoad={() => setLoaded(true)} /></div></> : <Link href={`/work/${project.slug}`} className="real-project-image">
+        {visual.image ? <Image src={visual.image} alt={visual.alt} fill priority={isFirst} sizes="(max-width: 760px) 100vw, 86vw" /> : <span className="project-image-fallback">{project.name}</span>}
         {/* A capture of the live site already carries the brand name, so overlaying
             the project title on top just collides with the page's own wordmark. */}
         {visual.theme !== "site" && <span className="real-project-title">{project.name}<ArrowUpRight strokeWidth={1} /></span>}
         <span className="project-image-caption">{visual.label}</span>
       </Link>}
-      <div className="real-browser-bar"><span className="browser-dots" aria-hidden="true"><i /><i /><i /></span><span>{host}</span>{project.live_url && <button type="button" onClick={() => { setLoaded(false); onPreview(); }} aria-expanded={preview} aria-label={preview ? `Close ${project.name} preview` : `Preview ${project.name} website`}>{preview ? <><X size={14} /> Close preview</> : <><Globe size={14} /> Preview website</>}</button>}</div>
+      <div className="real-browser-bar"><span className="browser-dots" aria-hidden="true"><i /><i /><i /></span><span>{host}</span>{project.live_url && <button type="button" onClick={() => { setLoaded(false); onPreview(); }} aria-expanded={preview} aria-label={`${preview ? "Close preview" : "Preview website"} — ${project.name}`}>{preview ? <><X size={14} /> Close preview</> : <><Globe size={14} /> Preview website</>}</button>}</div>
     </div>
     <div className="real-project-bottom"><div><h3>{visual.caption}</h3><p>{project.short_description}</p></div><div className="real-project-actions">{project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="film-button">Visit website <ArrowUpRight size={17} /></a>}<Link href={`/work/${project.slug}`} className="film-text-link">Explore the project <ArrowUpRight size={16} /></Link></div></div>
     {preview && <p className="preview-note">A live look at {project.name}. Open the website to explore the complete experience.</p>}
@@ -39,5 +41,7 @@ export function ProjectShowcase({ project, index, preview, onPreview }: { projec
 
 export function ProjectCollection({ projects }: { projects: Project[] }) {
   const [activePreview, setActivePreview] = useState<string | null>(null);
-  return <div className="real-projects">{projects.map((project, index) => <ProjectShowcase key={project.id} project={project} index={index} preview={activePreview === project.id} onPreview={() => setActivePreview(activePreview === project.id ? null : project.id)} />)}</div>;
+  // Each project card is an h3. Without a heading above them the sequence skips
+  // h2 on pages where this list is the main content (e.g. /work).
+  return <section aria-labelledby="selected-projects-heading"><h2 id="selected-projects-heading" className="film-sr">Selected projects</h2><div className="real-projects">{projects.map((project, index) => <ProjectShowcase key={project.id} project={project} index={index} preview={activePreview === project.id} onPreview={() => setActivePreview(activePreview === project.id ? null : project.id)} />)}</div></section>;
 }
