@@ -6,6 +6,19 @@
    specificity as the dark-scene rules below, so those still win on source order. */
 .content-section:where(:not(.dark)) h2 span,.page-hero h1 span{color:#1a4fd0}
 .service-approach h2 span,.service-cta h2 span{color:#4d8dff}
+
+/* Dense hero: used where the visitor needs a price, a timeline and a next step
+   without scrolling. Removes the large dead band under the subheadline. */
+.page-hero-dense{padding:clamp(7rem,12vw,10rem) clamp(1.25rem,8vw,11rem) clamp(2.5rem,5vw,4rem)}
+.page-hero-dense .hero-rule{margin-top:clamp(2rem,3.5vw,3rem)}
+.page-hero-meta{display:flex;flex-wrap:wrap;gap:clamp(1.2rem,3vw,3.5rem);margin:clamp(1.8rem,3vw,2.6rem) 0 0;padding:1.4rem 0 0;border-top:1px solid var(--line)}
+.page-hero-meta>div{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.page-hero-meta dt{font-size:.63rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase;color:#5b6577}
+.page-hero-meta dd{margin:0;font:600 clamp(1.05rem,1.7vw,1.5rem)/1.15 var(--font-display);letter-spacing:-.035em;color:var(--ink);white-space:nowrap}
+.page-hero-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:clamp(1.6rem,2.6vw,2.2rem)}
+.page-hero-actions .button{min-height:52px;padding:1rem 1.5rem}
+.page-hero-actions .button-secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.page-hero-actions .button-secondary:hover{background:#eef4fb;border-color:#b9cde6;box-shadow:none}
 .service-intro-lead{margin:0;font:450 clamp(1.25rem,2.1vw,1.75rem)/1.5 var(--font-display);letter-spacing:-.035em;max-width:44rem}
 .service-intro-aside p:last-child{margin:0;line-height:1.65;color:#5b6980;font-size:.92rem}
 .service-scope{display:flex;flex-wrap:wrap;gap:.6rem;margin:clamp(2rem,4vw,3rem) 0 0;padding:0;list-style:none}
@@ -156,6 +169,7 @@
   .estimator{grid-template-columns:1fr}
   .estimator-detail,.estimator-addons,.estimator-options,.estimator-total,.estimator-disclaimer{grid-column:1}
   .service-cta{flex-direction:column;align-items:flex-start}
+  .page-hero-meta{gap:1rem 1.6rem}
 }
 @media(max-width:760px){
   .estimator-total{flex-direction:column;align-items:flex-start}
@@ -163,4 +177,9 @@
   .estimator-addon-mark{grid-area:mark}
   .estimator-addon-text{grid-area:text}
   .estimator-addon-price{grid-area:price;padding-left:2.1rem;margin-top:-.4rem}
+  .page-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.4rem}
+  .page-hero-meta>div:last-child:nth-child(odd){grid-column:1/-1}
+  .page-hero-meta dd{white-space:normal;font-size:1rem}
+  .page-hero-actions{flex-direction:column;align-items:stretch}
+  .page-hero-actions .button{justify-content:center}
 }

@@ -32,10 +32,30 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
 
   const others = services.filter((candidate) => candidate.slug !== service.slug);
   const entry = service.options[0];
+  const top = service.options[service.options.length - 1];
 
   return (
     <main id="main" className="page-main service-detail">
-      <PageHero eyebrow={service.eyebrow} title={service.name}>
+      <PageHero
+        eyebrow={service.eyebrow}
+        title={service.name}
+        dense
+        meta={[
+          { label: "Indicative range", value: moneyRange(entry.from, top.to) },
+          { label: "Fastest timeline", value: entry.timeline },
+          { label: "Includes", value: `${service.options.length} packages · ${service.addOns.length} add-ons` },
+        ]}
+        actions={
+          <>
+            <Link href="#estimate" className="button">
+              Build my estimate <ArrowUpRight size={17} />
+            </Link>
+            <Link href="/work" className="button button-secondary">
+              See the work <ArrowUpRight size={17} />
+            </Link>
+          </>
+        }
+      >
         {service.line}
       </PageHero>
 
