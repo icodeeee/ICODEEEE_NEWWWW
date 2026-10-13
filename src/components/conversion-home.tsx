@@ -26,10 +26,12 @@ const faqs = [
 ];
 
 function Reveal({ children, className = "", direction = "up", delay = 0, calm }: { children: ReactNode; className?: string; direction?: "up" | "left" | "right"; delay?: number; calm: boolean }) {
-  // Pre-reveal opacity floors at 0.4 rather than 0.2: content that has not yet
-  // scrolled into view stays legible (and keeps a passing contrast ratio) instead
-  // of being washed out for anyone reading before the animation triggers.
-  return <motion.div className={className} initial={false} animate="hidden" whileInView="visible" viewport={{ amount: .12 }} variants={{ visible: { opacity: 1, x: 0, y: 0 }, hidden: { opacity: calm ? 1 : .4, x: calm ? 0 : direction === "left" ? -50 : direction === "right" ? 50 : 0, y: calm || direction !== "up" ? 0 : 40 } }} transition={{ duration: calm ? 0 : .8, ease, delay }}>{children}</motion.div>;
+  // Pre-reveal state must stay legible and on-screen. The horizontal offset is
+  // deliberately small: at mobile widths the section gutter is only ~23px, so a
+  // -50px slide pushed headings off the left edge while the animation played.
+  // The opacity floor also stops text reading as washed out before reveal.
+  const SLIDE = 18;
+  return <motion.div className={className} initial={false} animate="hidden" whileInView="visible" viewport={{ amount: .12 }} variants={{ visible: { opacity: 1, x: 0, y: 0 }, hidden: { opacity: calm ? 1 : .55, x: calm ? 0 : direction === "left" ? -SLIDE : direction === "right" ? SLIDE : 0, y: calm || direction !== "up" ? 0 : 28 } }} transition={{ duration: calm ? 0 : .8, ease, delay }}>{children}</motion.div>;
 }
 
 function ProcessScene({ calm }: { calm: boolean }) {

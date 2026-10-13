@@ -120,6 +120,13 @@
 .consent-accept:hover{background:#0b4fd0}
 .consent-decline{border:1px solid var(--line);background:#fff;color:#33415c}
 .consent-decline:hover{background:#f2f6fd}
+/* On small screens the banner must not eat a whole viewport or cover a CTA. */
+@media(max-width:600px){
+  .consent-banner{left:8px;right:8px;bottom:8px;width:auto;transform:none;padding:.85rem .95rem;gap:.7rem}
+  .consent-banner p{font-size:.76rem;line-height:1.5}
+  .consent-banner>div{width:100%}
+  .consent-accept,.consent-decline{flex:1;text-align:center}
+}
 
 /* Portfolio covers that are captures of the live site: frame the top of the
    page so the navigation and hero headline stay visible in the panel. */

@@ -52,10 +52,15 @@ export function ConsentBanner() {
     }
   };
 
+  // Only name the Meta Pixel when one is actually configured — promising
+  // tracking that is not present is misleading.
+  const pixelActive = Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID);
+
   return <div className="consent-banner" role="region" aria-label="Cookie and analytics consent">
     <p>
-      We use cookies and Meta Pixel to understand how people find us and improve this site.
-      Nothing is loaded until you choose. <a href="/privacy">Privacy</a>
+      {pixelActive
+        ? <>We use cookies and the Meta Pixel to understand how people find us and improve this site. Nothing is loaded until you choose. <a href="/privacy">Privacy</a></>
+        : <>We use cookies to understand how people find us and improve this site. Nothing is loaded until you choose. <a href="/privacy">Privacy</a></>}
     </p>
     <div>
       <button type="button" className="consent-decline" onClick={() => decide("denied")}>Decline</button>
