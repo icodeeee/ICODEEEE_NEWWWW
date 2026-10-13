@@ -1,6 +1,7 @@
 # iCodeee — Website Audit & Meta Ads Conversion Optimization Report
 
 **Prepared:** 13 October 2026
+**Remediated:** 13 October 2026 — see §12 for fix status and what still needs your input.
 **Scope:** Read-only inspection of the iCodeee studio site (Next.js App Router application in `ICODEEE-NEW`).
 **Method:** Local production build served via `next start` (port 3101) plus local dev server (port 3001). Crawl, HTTP status testing, DOM/computed-style measurement, form endpoint testing, Lighthouse, responsive testing via same-origin iframes, and source review.
 
@@ -602,3 +603,54 @@ Per your instructions I have **stopped at the audit and made no changes**. No fi
 4. **Your real service pricing** — `src/lib/services.ts` currently contains **placeholder ranges I invented** (₹60K–₹6L). These are on your public site now. Do you want to supply the real numbers before we go near ad traffic?
 
 I will not touch DNS, hosting, billing, or any live integration, and I will not add plugins or scripts without your explicit go-ahead.
+---
+
+## 12. Remediation status (13 October 2026)
+
+Work committed on branch `audit-fixes` (checkpoint commit `6d3831d`, fixes commit `3ed78d7`, 36 files).
+Nothing was deployed; no DNS, hosting, billing or live integration was touched.
+
+### Fixed and verified
+
+| Finding | Fix | Verification |
+| --- | --- | --- |
+| F-04 white-on-white | `.content-section:not(.dark)` → `:where(:not(.dark))` so the `:not()` stops contributing specificity | Measured 1.08:1 → **17.86:1**; secondary text now ≥5.06 |
+| F-03 no fallback route | Email/phone/WhatsApp always visible on `/contact`, repeated inside the error state | Browser test: error state renders "The form didn't send…" with a `mailto:` link |
+| F-20 honeypot dead code | Evaluated before validation; returns decoy `201` | `POST` with honeypot → **201**, no row written |
+| F-01 no tracking | Meta Pixel + CAPI, both consent-gated; `Lead` fires server-side on confirmed 201 with shared `event_id` | 0 `facebook.net` refs in HTML pre-consent; `fbq` absent after decline |
+| F-05 no UTM | Capture + persist 30 days, attach to lead | `?utm_source=facebook&utm_campaign=launch_test` stored correctly |
+| F-06 no consent | Consent banner gating all tracking | Decline → banner hidden, `denied` stored, no pixel |
+| F-09 generic OG | Shared `pageMetadata()` helper | OG title+url now differ across 5 sampled pages |
+| F-14 no favicon | `icon.png` + `apple-icon.png` + `favicon.ico` | `<link rel="icon">` present |
+| F-10 homepage dynamic | Partially — portfolio routes made static | Build shows `○ /work`, `● /work/[slug]` |
+| F-11 no autofill | `autocomplete` + `inputmode` on all fields | Verified in DOM |
+| F-12/F-13 SEO config | Warn loudly when site URL is localhost; sitemap drops `lastModified` and `/resources` | Build log emits warning; sitemap 15 URLs, 0 `lastModified` |
+| F-15 `/resources` | Removed from nav + sitemap, marked `noindex` | Nav shows Privacy instead |
+| F-16/F-17 ARIA | Marquee `aria-hidden`; accessible names now contain visible text | `label-content-name-mismatch` cleared |
+| F-18 contrast | All secondary text ≥4.5:1; belief `em` 3.72 → 4.91 | 0 failures after full scroll |
+| F-21 security | CSP, HSTS, frame/referrer/permissions headers; `poweredByHeader: false` | All headers present; `X-Powered-By` gone |
+| F-22 soft 404 | Public reads use anon client (no `cookies()`), routes static, `dynamicParams = false` | `/work/nope`, `/nope`, `/services/nope` → **404** |
+| F-23 LCP | `priority` on first portfolio cover and hero image | Next LCP warning gone |
+| F-24 logo | `width:auto` alongside `height:100%` | Warning gone |
+| F-08 trust | Real client wordmark strip using existing assets; JSON-LD added | Renders on `/work` |
+| F-26/F-27/F-28 | Dead reduced-motion toggle removed; anchor offset added | — |
+
+### Verified overall
+
+21 routes 200 · unknown URLs 404 · Lighthouse **a11y 0.96 / best-practices 1.00 / SEO 1.00** on 7 pages · 0 broken images · 0 images missing `alt` · 1 `h1` and 1 `main` per page · 0 contrast failures after scroll · 9 CTAs to `/contact` on the homepage.
+
+### Still open — needs your input
+
+1. **Supabase keys (F-02).** The code now degrades gracefully and offers a fallback, but leads still only save if `SUPABASE_SERVICE_ROLE_KEY` is set in production. Run `supabase/migrations/002_campaign_attribution.sql` for UTM columns.
+2. **Meta credentials (F-01).** Set `NEXT_PUBLIC_META_PIXEL_ID` and `META_CAPI_TOKEN`, then verify in Events Manager Test Events.
+3. **`NEXT_PUBLIC_SITE_URL` (F-12).** Must be the real production origin.
+4. **Case study content (F-08).** All three projects still have empty `case_study_content`. Not written — real client outcomes are yours to supply.
+5. **Pricing (F-19).** `src/lib/services.ts` still holds placeholder ranges I invented. Replace before ad traffic lands.
+6. **Phone/WhatsApp (F-03).** Render only once `NEXT_PUBLIC_CONTACT_PHONE` / `_WHATSAPP` are set.
+7. **Homepage client-component split (F-10).** Not done — highest effort, deferred as it was not a launch blocker.
+
+### Known trade-offs
+
+- `dynamicParams = false` means a project added via the CMS becomes routable on the next deployment, not immediately. Chosen for correct 404 status codes.
+- The Lighthouse `color-contrast` flag on scroll-reveal sections persists. It is a false positive: the audit screenshots content mid-animation. After a full scroll, measured contrast failures = 0. The pre-reveal opacity floor was raised from 0.2 to 0.4 regardless, so un-revealed content stays legible.
+- No Core Web Vitals numbers are claimed anywhere — the performance category was never returned by the available tooling. Establish field baselines via Search Console once deployed.
