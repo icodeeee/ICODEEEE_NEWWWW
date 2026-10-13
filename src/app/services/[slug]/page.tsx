@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Check, Minus } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { ServiceEstimator } from "@/components/service-estimator";
+import { ApproachSection } from "@/components/approach-section";
 import { getService, moneyRange, services } from "@/lib/services";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -74,21 +75,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
         </ul>
       </section>
 
-      <section className="content-section service-approach">
-        <p className="eyebrow">How we work</p>
-        <h2>
-          The method behind <span>the result.</span>
-        </h2>
-        <div className="service-approach-grid">
-          {service.approach.map((step, i) => (
-            <article key={step.title}>
-              <span>0{i + 1}</span>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <ApproachSection service={service} />
 
       <section className="content-section service-estimate" id="estimate">
         <p className="eyebrow">Build your estimate</p>

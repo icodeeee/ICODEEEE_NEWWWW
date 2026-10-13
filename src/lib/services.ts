@@ -37,7 +37,7 @@ export type Service = {
   eyebrow: string;
   intro: string;
   bestFor: string;
-  approach: { title: string; text: string }[];
+  approach: { title: string; text: string; detail: string; deliverables: string[] }[];
   options: ServiceOption[];
   addOns: ServiceAddOn[];
   notIncluded: string[];
@@ -70,9 +70,24 @@ export const services: Service[] = [
     bestFor:
       "Founders and teams who need a credible online presence, are replacing something that no longer reflects the business, or need a site that converts enquiries rather than just existing.",
     approach: [
-      { title: "Structure before style", text: "We settle the page architecture, navigation and content hierarchy before a single visual decision. Most weak websites are structural problems wearing a design problem." },
-      { title: "Built for the phone first", text: "Most of your traffic is on a phone, on a connection that is not good. We design and test for that condition, not for a studio monitor." },
-      { title: "Handover you can actually use", text: "You get a CMS, documentation and training. We do not build something that only we can maintain." },
+      {
+        title: "Structure before style",
+        text: "We settle the page architecture, navigation and content hierarchy before a single visual decision. Most weak websites are structural problems wearing a design problem.",
+        detail: "Before anything is designed, we map every page, what it has to achieve, and what a visitor should do next. If the structure is wrong, no amount of polish fixes it — people still cannot find anything or work out what you do. This is also where we settle what content each page needs, so design stops being guesswork.",
+        deliverables: ["Sitemap with a purpose per page", "Journeys for the paths that earn money", "Content inventory and hierarchy", "Navigation model"],
+      },
+      {
+        title: "Built for the phone first",
+        text: "Most of your traffic is on a phone, on a connection that is not good. We design and test for that condition, not for a studio monitor.",
+        detail: "We design and test in the condition your customers actually have: a small screen, a slow connection, one thumb. If it works there it works everywhere, and you stop paying people to retrofit desktop layouts that were never the problem.",
+        deliverables: ["Mobile-first layouts", "Agreed performance budget", "Testing on real devices", "Accessible tap targets and type sizes"],
+      },
+      {
+        title: "Handover you can actually use",
+        text: "You get a CMS, documentation and training. We do not build something that only we can maintain.",
+        detail: "A site you cannot update goes stale within a month. You get a CMS your team can run, written documentation, and a walkthrough — so copy can change and pages can ship without calling a developer and without breaking anything.",
+        deliverables: ["CMS with editor training", "Written handover documentation", "Launch checklist and rollback plan", "30 days of post-launch support"],
+      },
     ],
     options: [
       {
@@ -128,9 +143,24 @@ export const services: Service[] = [
     bestFor:
       "Fashion, lifestyle and product brands selling direct, and retailers moving off a marketplace or onto a platform they do not control.",
     approach: [
-      { title: "Catalogue architecture first", text: "How products are grouped, filtered and described determines whether people can find anything. We fix this before we touch the design." },
-      { title: "Checkout is the whole business", text: "We remove every field, step and surprise that stands between a customer and payment, then test it on a real phone." },
-      { title: "Own your customer", text: "Email capture, post-purchase flows and analytics that tell you what actually sells — not just what people click." },
+      {
+        title: "Catalogue architecture first",
+        text: "How products are grouped, filtered and described determines whether people can find anything. We fix this before we touch the design.",
+        detail: "If someone cannot find a product in three clicks, no amount of visual design brings them back. We decide how your catalogue is grouped, which filters earn their place, and how each product is described — so people actually find what they came for.",
+        deliverables: ["Category and filter model", "Product page template", "Naming and description conventions", "Variant and size structure"],
+      },
+      {
+        title: "Checkout is the whole business",
+        text: "We remove every field, step and surprise that stands between a customer and payment, then test it on a real phone.",
+        detail: "Every extra field, surprise fee and forced account costs you completed orders. We strip the path to payment down to what we genuinely need, remove the friction we can, then test the whole flow repeatedly on a real phone before launch.",
+        deliverables: ["Reduced-field checkout", "Payment and shipping configuration", "Mobile checkout testing", "Abandoned cart recovery"],
+      },
+      {
+        title: "Own your customer",
+        text: "Email capture, post-purchase flows and analytics that tell you what actually sells — not just what people click.",
+        detail: "Selling on a marketplace means renting your customer. We set up first-party email capture, post-purchase flows and reporting that shows what genuinely sells and why — so you own the relationship and can keep it.",
+        deliverables: ["Email capture and welcome flow", "Post-purchase automation", "Sales and funnel reporting", "Customer data you own"],
+      },
     ],
     options: [
       {
@@ -186,9 +216,24 @@ export const services: Service[] = [
     bestFor:
       "Teams building a product, an app or a complex booking or customer flow, and anyone whose existing interface is confusing users or leaking conversions.",
     approach: [
-      { title: "Understand the actual user", text: "We map who is using this, what they are trying to achieve and where they currently give up." },
-      { title: "Sketch the awkward parts", text: "The hard flows — empty states, errors, edge cases — get designed first, because they are where products are usually judged." },
-      { title: "Test before you build", text: "A prototype in front of real users is cheaper than a finished screen that does not work." },
+      {
+        title: "Understand the actual user",
+        text: "We map who is using this, what they are trying to achieve and where they currently give up.",
+        detail: "Most redesigns fail because they answer questions nobody asked. We map who really uses the product, what they came to do, and the exact point where they currently give up — so we fix the real obstacle instead of the most visible one.",
+        deliverables: ["User and role map", "Current journey with drop-off points", "Prioritised problem list", "Success measures"],
+      },
+      {
+        title: "Sketch the awkward parts",
+        text: "The hard flows — empty states, errors, edge cases — get designed first, because they are where products are usually judged.",
+        detail: "Happy paths are easy and rarely memorable. We design the parts people actually hit and remember: empty screens, errors, permissions, long names, awkward data. That is where a product feels considered — or cheap.",
+        deliverables: ["Empty, loading and error states", "Edge-case and permission handling", "Content and data stress tests", "Accessible interaction patterns"],
+      },
+      {
+        title: "Test before you build",
+        text: "A prototype in front of real users is cheaper than a finished screen that does not work.",
+        detail: "We build an interactive prototype and watch real people attempt the task. What they struggle with costs a week to fix in a prototype and months to fix after engineering — so the expensive mistakes happen early and cheaply.",
+        deliverables: ["Clickable prototype", "Moderated usability sessions", "Findings with recommended fixes", "Tested designs for development"],
+      },
     ],
     options: [
       {
@@ -244,9 +289,24 @@ export const services: Service[] = [
     bestFor:
       "Businesses that have outgrown their original positioning, are launching something new, or have plenty of content that simply isn't working.",
     approach: [
-      { title: "Say one thing well", text: "A brand that says everything says nothing. We find the one claim that matters most and build everything around it." },
-      { title: "Write for the decision", text: "Copy should answer the question a buyer is actually asking at that point — not describe what you did on Tuesday." },
-      { title: "Plan you can sustain", text: "A calendar your team can realistically maintain, not a strategy deck that dies in a folder." },
+      {
+        title: "Say one thing well",
+        text: "A brand that says everything says nothing. We find the one claim that matters most and build everything around it.",
+        detail: "We interview your team and your customers, look at what competitors claim, and find the single claim that is both true and hard to copy. Every page, post and pitch is then built to support that one idea.",
+        deliverables: ["Stakeholder interviews", "Competitive and audience review", "Positioning statement", "Messaging hierarchy"],
+      },
+      {
+        title: "Write for the decision",
+        text: "Copy should answer the question a buyer is actually asking at that point — not describe what you did on Tuesday.",
+        detail: "We map the questions a buyer asks in order — what is this, is it for me, can I trust it, what does it cost, what happens next — and write to answer each one at the moment it is asked, instead of describing your process.",
+        deliverables: ["Buyer question map", "Website copy by page", "Tone of voice guide", "Sales and proposal language"],
+      },
+      {
+        title: "Plan you can sustain",
+        text: "A calendar your team can realistically maintain, not a strategy deck that dies in a folder.",
+        detail: "Strategy that nobody can execute is decoration. We build a publishing calendar around the capacity you actually have, with topics researched in advance and a review rhythm — so this is something that keeps running after we leave.",
+        deliverables: ["Quarterly content strategy", "Publishing calendar", "Topic research and briefs", "Performance review rhythm"],
+      },
     ],
     options: [
       {
@@ -302,9 +362,24 @@ export const services: Service[] = [
     bestFor:
       "Apparel and lifestyle brands, businesses rebranding, and anyone whose identity no longer matches how good their work has become.",
     approach: [
-      { title: "Start from what makes you different", text: "We find the idea worth building a mark around — usually not the one in the original brief." },
-      { title: "Design for the hardest format", text: "We test identities on a garment, a packaging box and a phone before we call them finished." },
-      { title: "Hand over usable files", text: "Organised, editable source files and real usage rules, not a folder of loose exports." },
+      {
+        title: "Start from what makes you different",
+        text: "We find the idea worth building a mark around — usually not the one in the original brief.",
+        detail: "We spend time on what you actually do that competitors cannot, rather than accepting the first description in the brief. That honest idea is what the identity is built from, which is why the result feels specific rather than generic.",
+        deliverables: ["Discovery workshop", "Positioning and differentiation", "Creative territories", "Chosen direction"],
+      },
+      {
+        title: "Design for the hardest format",
+        text: "We test identities on a garment, a packaging box and a phone before we call them finished.",
+        detail: "A mark that only works on a big screen falls apart at 32 pixels, on a fold, or across a shirt. We test in the hardest real formats early, so what you approve is what actually ships and stays recognisable everywhere.",
+        deliverables: ["Logo suite across formats", "Tested at small and awkward sizes", "Colour and type system", "Real-world mockups"],
+      },
+      {
+        title: "Hand over usable files",
+        text: "Organised, editable source files and real usage rules, not a folder of loose exports.",
+        detail: "We hand over organised, editable source files plus the rules that keep the work coherent — what to do, what never to do, and who to ask when it is genuinely new. Otherwise identity erodes within two years of normal internal changes.",
+        deliverables: ["Organised source files", "Brand guidelines that are usable", "Do and do-not rules", "Team walkthrough"],
+      },
     ],
     options: [
       {
