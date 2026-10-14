@@ -6,9 +6,12 @@
 - Branch to deploy: `audit-fixes`
 - Framework: Next.js (Vercel auto-detects this from `package.json`)
 - Root directory: repository root
+- Vercel project: `icodeeee-newwww`
+- Live URL: <https://icodeeee-newwww.vercel.app>
 
-Import this repository in Vercel and select `audit-fixes` as the production
-branch. The branch contains the current site, including the quote-request flow.
+The project is connected to `audit-fixes`, which contains the current site and
+quote-request flow. New commits to that branch deploy through the GitHub
+integration.
 
 ## Environment variables
 
