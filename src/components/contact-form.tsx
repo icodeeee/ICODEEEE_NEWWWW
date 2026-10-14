@@ -8,11 +8,23 @@ const initial = { name: "", email: "", phone: "", company: "", website: "", proj
 const MIN_MESSAGE = 20;
 
 /** Maps a failed submission to something a visitor can actually act on. */
-function fallbackBlock() {
+function fallbackBlock(form: typeof initial) {
+  const body = [
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    form.phone && `Phone: ${form.phone}`,
+    form.company && `Company: ${form.company}`,
+    form.website && `Website: ${form.website}`,
+    form.project_type && `Project: ${form.project_type}`,
+    form.budget && `Budget: ${form.budget}`,
+    "",
+    form.message,
+  ].filter((line): line is string => Boolean(line)).join("\n");
+  const mailto = `mailto:${contact.email}?subject=${encodeURIComponent(`Project enquiry from ${form.name || "website"}`)}&body=${encodeURIComponent(body)}`;
   return <div className="form-fallback">
-    <p><b>The form didn&apos;t send.</b> Rather than lose your message, reach us directly:</p>
+    <p><b>The form didn&apos;t send.</b> Open a prefilled email and send it, or contact us directly:</p>
     <div>
-      <a href={`mailto:${contact.email}`}><Mail size={15} strokeWidth={2} aria-hidden="true" />{contact.email}</a>
+      <a href={mailto}><Mail size={15} strokeWidth={2} aria-hidden="true" />Email your brief</a>
       {hasPhone && <a href={phoneHref}><Phone size={15} strokeWidth={2} aria-hidden="true" />{contact.phone}</a>}
       {hasWhatsApp && <a href={whatsappHref} target="_blank" rel="noreferrer"><MessageCircle size={15} strokeWidth={2} aria-hidden="true" />WhatsApp</a>}
     </div>
@@ -43,7 +55,7 @@ export function ContactForm({ defaults }: { defaults?: { projectType?: string; m
 
   const update = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setForm({ ...form, [event.target.name]: event.target.value });
 
-  if (state === "sent") return <div className="form-success" role="status"><p className="eyebrow">Message received</p><h2>WE&apos;LL BE IN<br /><span>TOUCH.</span></h2><p>Thanks for sharing the brief. We&apos;ll review it and reply within two working days — usually much sooner.</p><button className="button" onClick={() => setState("idle")}>Send another <span>→</span></button></div>;
+  if (state === "sent") return <div className="form-success" role="status"><p className="eyebrow">Message received</p><h2>WE&apos;LL BE IN<br /><span>TOUCH.</span></h2><p>Thanks for sharing the brief. We&apos;ll review it and get back to you as soon as we can.</p><button className="button" onClick={() => setState("idle")}>Send another <span>→</span></button></div>;
 
   return <form className="contact-form" onSubmit={submit}>
     <div className="honeypot" aria-hidden="true"><label>Leave this empty<input tabIndex={-1} autoComplete="off" name="company_site" value={form.company_site} onChange={update} /></label></div>
@@ -61,7 +73,7 @@ export function ContactForm({ defaults }: { defaults?: { projectType?: string; m
       </select></label>
     </div>
     <label className="message-field">What&apos;s the opportunity?<textarea name="message" value={form.message} onChange={update} minLength={MIN_MESSAGE} required placeholder="Tell us what you’re building, where it needs to go, and what matters most." />{remaining > 0 && <span className="form-counter">{remaining} characters to go</span>}</label>
-    {state === "error" && <div role="alert"><p className="form-error">{error}</p>{fallbackBlock()}</div>}
+    {state === "error" && <div role="alert"><p className="form-error">{error}</p>{fallbackBlock(form)}</div>}
     <button className="button" disabled={state === "sending"}>{state === "sending" ? "Sending…" : "Send the brief"}<span>→</span></button>
   </form>;
 }

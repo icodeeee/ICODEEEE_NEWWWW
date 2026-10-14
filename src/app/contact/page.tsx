@@ -25,7 +25,7 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
       message = [
         `I'm interested in ${parsed.service ?? "a project"} — ${parsed.option ?? "not sure yet"} option.`,
         addOns && `Add-ons I'm considering: ${addOns}.`,
-        parsed.range && `Indicative estimate from the site: ${parsed.range}.`,
+        parsed.range && `Pricing note from the service page: ${parsed.range}.`,
         "",
         "What I'm trying to achieve:",
       ].filter(Boolean).join("\n");
@@ -57,7 +57,7 @@ export default async function Contact({ searchParams }: { searchParams: Promise<
       </div>
     </section>
     <section className="contact-shell">
-      {rawEstimate && <p className="contact-prefill-note">We&apos;ve carried your estimate over. Adjust anything below, or just add your brief.</p>}
+      {rawEstimate && <p className="contact-prefill-note">We&apos;ve carried your selected service details over. Adjust anything below, or add your brief.</p>}
       <ContactForm defaults={{ projectType, message }} />
     </section>
   </main>;

@@ -73,7 +73,7 @@ async function sendNotifications(lead: Record<string, unknown>) {
     ["Email", s(lead.email)], ["Company", s(lead.company)], ["Phone", s(lead.phone)],
     ["Focus", s(lead.project_type)], ["Budget", s(lead.budget)],
     // Funnel fields — only present when the lead came through the estimate funnel.
-    ["Package", s(lead.package_name)], ["Indicative range", s(lead.estimate_range)],
+    ["Package", s(lead.package_name)], ["Pricing", s(lead.estimate_range)],
     ["Free demo requested", lead.demo_requested ? "YES" : ""],
   ].filter(([, v]) => v).map(([k, v]) => `<tr><td style="padding:2px 12px 2px 0;color:#666">${escape(k)}</td><td><b>${escape(v)}</b></td></tr>`).join("");
   const html = `<h1>${escape(subject)}</h1><table style="border-collapse:collapse">${rows}</table><p style="white-space:pre-wrap">${escape(s(lead.message))}</p>`;

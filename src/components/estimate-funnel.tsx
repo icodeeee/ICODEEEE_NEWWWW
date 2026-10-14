@@ -19,22 +19,17 @@ const STEPS: { id: Step; label: string }[] = [
   { id: "package", label: "Package" },
   { id: "register", label: "Details" },
   { id: "questions", label: "Questions" },
-  { id: "result", label: "Estimate" },
+  { id: "result", label: "Quote request" },
 ];
 
 /**
- * Gated estimate funnel.
+ * Quote request funnel.
  *
- * Replaces the old always-open estimator, which gave the full range away to
- * everyone and captured nothing. The flow now withholds the exact number until
- * the visitor has registered and answered three multiple-choice questions, so
- * the range they eventually see reflects their own answers rather than being
- * the same price for everybody.
+ * Pricing is scoped individually, so this flow captures a useful brief without
+ * presenting unconfirmed prices as an estimate.
  *
- * The estimate itself is computed in the browser — the request exists only to
- * capture the lead. A failed save therefore never blocks the visitor: they
- * still get their number, and we say plainly that we could not store their
- * details and point them at a direct email address.
+ * A failed save never blocks the visitor; we say plainly that the request was
+ * not stored and point them at a direct email address.
  */
 export function EstimateFunnel({ service }: { service: Service }) {
   const [step, setStep] = useState<Step>("package");
@@ -49,6 +44,15 @@ export function EstimateFunnel({ service }: { service: Service }) {
   const estimate = useMemo(() => computeEstimate(option, answers), [option, answers]);
   const answered = estimateQuestions.filter((q) => answers[q.id]).length;
   const detailsReady = details.name.trim().length >= 2 && /.+@.+\..+/.test(details.email);
+  const directEmailBody = [
+    `Name: ${details.name}`,
+    `Email: ${details.email}`,
+    details.phone && `Phone: ${details.phone}`,
+    `Service: ${service.name}`,
+    `Requested scope: ${option.name}`,
+    ...answerLines(answers),
+  ].filter((line): line is string => Boolean(line)).join("\n");
+  const directEmail = `mailto:hello@icodeee.com?subject=${encodeURIComponent(`Quote request from ${details.name || "website"}`)}&body=${encodeURIComponent(directEmailBody)}`;
 
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 
@@ -93,7 +97,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
       message: briefMessage(service.name, option, answers, estimate.label),
       package_name: option.name,
       estimate_range: estimate.label,
-      demo_requested: true,
+      demo_requested: false,
       answers: JSON.stringify(answers),
       company_site: honeypot,
     };
@@ -145,7 +149,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
           <div className="funnel-step">
             <h3 className="funnel-step-title">Pick a starting point</h3>
             <p className="funnel-step-sub">
-              Three levels. Register on the next step and you&apos;ll see the range your answers land on.
+              Choose the closest scope. We&apos;ll review your answers before preparing a quote.
             </p>
             <div className="funnel-options" role="radiogroup" aria-label={`${service.name} packages`}>
               {service.options.map((candidate) => {
@@ -161,7 +165,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
                   >
                     <span className="funnel-option-head">
                       <b>{candidate.name}</b>
-                      <i>from {money(candidate.from)}</i>
+                      <i>{money(candidate.from)}</i>
                     </span>
                     <span className="funnel-option-pitch">{candidate.pitch}</span>
                     <span className="funnel-option-meta">{candidate.timeline}</span>
@@ -181,10 +185,10 @@ export function EstimateFunnel({ service }: { service: Service }) {
               </ul>
             </div>
             <button type="button" className="button funnel-cta" onClick={() => setStep("register")}>
-              Get my free demo <ArrowRight size={16} aria-hidden="true" />
+              Request a quote <ArrowRight size={16} aria-hidden="true" />
             </button>
             <p className="funnel-gate-note">
-              <Lock size={12} aria-hidden="true" /> The exact range is revealed once you register.
+              <Lock size={12} aria-hidden="true" /> Share a few details to send us your project brief.
             </p>
           </div>
         )}
@@ -193,7 +197,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
           <div className="funnel-step">
             <h3 className="funnel-step-title">Where should we send it?</h3>
             <p className="funnel-step-sub">
-              Two fields. Three quick questions next, and your indicative range.
+              We&apos;ll use these details to follow up about your project.
             </p>
             <form
               className="funnel-form"
@@ -265,7 +269,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
           <div className="funnel-step">
             <h3 className="funnel-step-title">Three quick questions</h3>
             <p className="funnel-step-sub">
-              {answered} of {estimateQuestions.length} answered. These adjust the range.
+              {answered} of {estimateQuestions.length} answered. This helps us understand your scope.
             </p>
             <div className="funnel-questions">
               {estimateQuestions.map((question) => (
@@ -297,7 +301,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
               disabled={answered < estimateQuestions.length}
               onClick={revealEstimate}
             >
-              See my estimate <ArrowRight size={16} aria-hidden="true" />
+              Send my quote request <ArrowRight size={16} aria-hidden="true" />
             </button>
             <button type="button" className="funnel-back" onClick={() => setStep("register")}>
               Back
@@ -307,7 +311,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
 
         {step === "result" && (
           <div className="funnel-step funnel-result">
-            <h3 className="funnel-step-title">Your indicative range</h3>
+            <h3 className="funnel-step-title">Your brief is ready</h3>
             <p className="funnel-result-package">
               {option.name} · {service.name}
             </p>
@@ -324,31 +328,30 @@ export function EstimateFunnel({ service }: { service: Service }) {
 
             {saveState === "saved" && (
               <p className="funnel-result-status is-ok">
-                <Check size={14} strokeWidth={2.5} aria-hidden="true" /> Saved — this is in your inbox soon.
+                <Check size={14} strokeWidth={2.5} aria-hidden="true" /> Thanks — we&apos;ve received your brief and will follow up.
               </p>
             )}
             {saveState === "failed" && (
               <p className="funnel-result-status is-warn">
-                We couldn&apos;t save your details just now, so this isn&apos;t held against your name. Email{" "}
-                <a href="mailto:hello@icodeee.com">hello@icodeee.com</a> and we&apos;ll pick it up from there.
+                We couldn&apos;t store your request. Open a prefilled email and send it so we receive your brief.{" "}
+                <a href={directEmail}>Email your quote request</a>.
               </p>
             )}
             {saveState === "pending" && <p className="funnel-result-status">Saving…</p>}
 
             <div className="funnel-demo">
-              <h4>Next: your free demo landing page</h4>
+              <h4>What happens next?</h4>
               <p>
-                We&apos;ll build a one-page demo from the brief you just gave us and send it over.
-                No obligation, and yours to keep whether or not we work together.
+                We&apos;ll review the scope and your answers, then get in touch to discuss a tailored quote and timeline.
               </p>
               <Link href="/contact" className="button funnel-cta">
-                Start my demo <ArrowRight size={16} aria-hidden="true" />
+                Add more detail <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
 
             <p className="estimator-disclaimer">
-              A starting range, not a quote. Real scope and pricing depend on your content,
-              integrations and timeline — we&apos;ll confirm both in a first conversation.
+              Pricing depends on your requirements, content, integrations and timeline. We&apos;ll confirm
+              scope and cost with you before any work begins.
             </p>
           </div>
         )}

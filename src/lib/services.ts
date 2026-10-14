@@ -1,10 +1,9 @@
 /**
  * Service catalogue.
  *
- * Pricing below is an INDICATIVE STARTING RANGE, not a quote. It exists so a
- * visitor can self-select and arrive at a useful conversation instead of
- * guessing. Every number here is meant to be edited to match the studio's real
- * pricing — this is the only file that needs to change.
+ * Prices are intentionally unlisted until the studio confirms its real rates.
+ * A zero amount means pricing is scoped individually and must never be rendered
+ * as a numeric quote.
  */
 
 export type ServiceOption = {
@@ -13,7 +12,7 @@ export type ServiceOption = {
   pitch: string;
   includes: string[];
   timeline: string;
-  /** Indicative range in INR. */
+  /** INR range; zero means the studio scopes this service individually. */
   from: number;
   to: number;
 };
@@ -22,7 +21,7 @@ export type ServiceAddOn = {
   id: string;
   name: string;
   note: string;
-  /** Added to both ends of the selected range, in INR. */
+  /** INR add-on price; zero means quote on request. */
   price: number;
 };
 
@@ -43,8 +42,9 @@ export type Service = {
   notIncluded: string[];
 };
 
-/** Formats a rupee amount the way the site talks about money: ₹60K / ₹1.2L. */
+/** Formats a confirmed rupee price; zero is an unpriced, custom quote. */
 export function money(value: number): string {
+  if (value <= 0) return "Custom quote";
   if (value >= 100000) {
     const lakhs = value / 100000;
     return `₹${Number.isInteger(lakhs) ? lakhs : lakhs.toFixed(1)}L`;
@@ -53,6 +53,7 @@ export function money(value: number): string {
 }
 
 export function moneyRange(from: number, to: number): string {
+  if (from <= 0 || to <= 0) return "Custom quote";
   return from === to ? money(from) : `${money(from)} – ${money(to)}`;
 }
 
@@ -96,8 +97,8 @@ export const services: Service[] = [
         pitch: "A sharp, fast 5–8 page site for a business that needs to look credible now.",
         includes: ["Up to 8 pages", "Mobile-first responsive build", "CMS so you can edit content", "Contact / enquiry forms", "Basic on-page SEO setup", "Analytics installed"],
         timeline: "2–3 weeks",
-        from: 60000,
-        to: 90000,
+        from: 0,
+        to: 0,
       },
       {
         id: "growth",
@@ -105,8 +106,8 @@ export const services: Service[] = [
         pitch: "A larger site with the structure, content and integrations that support growth.",
         includes: ["Up to 20 pages", "Blog or resource centre", "Full CMS with training", "Third-party integrations", "Technical SEO & structured data", "Speed budget + Core Web Vitals work"],
         timeline: "4–6 weeks",
-        from: 120000,
-        to: 200000,
+        from: 0,
+        to: 0,
       },
       {
         id: "signature",
@@ -114,14 +115,14 @@ export const services: Service[] = [
         pitch: "A fully custom build with advanced functionality and a real design system.",
         includes: ["Unlimited page templates", "Custom web application features", "Headless / hybrid architecture", "Design system & component library", "Advanced SEO and migration plan", "Priority support after launch"],
         timeline: "8–12 weeks",
-        from: 250000,
-        to: 450000,
+        from: 0,
+        to: 0,
       },
     ],
     addOns: [
-      { id: "copy", name: "Copywriting", note: "Words written for the pages, not filled in afterwards.", price: 25000 },
-      { id: "seo", name: "SEO foundation", note: "Keyword research, technical fixes and an ongoing plan.", price: 40000 },
-      { id: "care", name: "Care plan (6 months)", note: "Updates, monitoring, backups and small changes.", price: 30000 },
+      { id: "copy", name: "Copywriting", note: "Words written for the pages, not filled in afterwards.", price: 0 },
+      { id: "seo", name: "SEO foundation", note: "Keyword research, technical fixes and an ongoing plan.", price: 0 },
+      { id: "care", name: "Care plan (6 months)", note: "Updates, monitoring, backups and small changes.", price: 0 },
     ],
     notIncluded: [
       "Domain and hosting costs",
@@ -169,8 +170,8 @@ export const services: Service[] = [
         pitch: "A focused storefront for a catalogue of up to 50 products.",
         includes: ["Up to 50 products", "Payments setup (India + international)", "Shipping & tax configuration", "Product photography guidance", "Checkout optimisation", "Order & inventory management setup"],
         timeline: "3–4 weeks",
-        from: 90000,
-        to: 140000,
+        from: 0,
+        to: 0,
       },
       {
         id: "growth",
@@ -178,8 +179,8 @@ export const services: Service[] = [
         pitch: "A store built to grow into — better discovery, retention and reporting.",
         includes: ["Up to 400 products", "Advanced filtering & search", "Email capture and flows", "Abandoned cart recovery", "Sales and funnel reporting", "Discount and bundle logic"],
         timeline: "5–8 weeks",
-        from: 180000,
-        to: 300000,
+        from: 0,
+        to: 0,
       },
       {
         id: "signature",
@@ -187,14 +188,14 @@ export const services: Service[] = [
         pitch: "A custom commerce experience for a brand with real scale or unusual needs.",
         includes: ["Unlimited catalogue", "Custom storefront design system", "Headless or hybrid commerce build", "ERP / 3rd-party integrations", "Multi-currency & multi-region", "Warehouse and fulfilment workflow"],
         timeline: "10–16 weeks",
-        from: 350000,
-        to: 600000,
+        from: 0,
+        to: 0,
       },
     ],
     addOns: [
-      { id: "migrate", name: "Store migration", note: "Moving products, customers and order history without losing SEO.", price: 45000 },
-      { id: "photos", name: "Product photography direction", note: "Shoot brief, styling guide and editing direction.", price: 30000 },
-      { id: "care", name: "Care plan (6 months)", note: "Monitoring, updates, patches and store changes.", price: 35000 },
+      { id: "migrate", name: "Store migration", note: "Moving products, customers and order history without losing SEO.", price: 0 },
+      { id: "photos", name: "Product photography direction", note: "Shoot brief, styling guide and editing direction.", price: 0 },
+      { id: "care", name: "Care plan (6 months)", note: "Monitoring, updates, patches and store changes.", price: 0 },
     ],
     notIncluded: [
       "Inventory, warehousing and shipping operations",
@@ -242,8 +243,8 @@ export const services: Service[] = [
         pitch: "A focused diagnostic and redesign of one critical flow.",
         includes: ["User and flow mapping", "Audit of your current product", "Wireframes for one key journey", "Clickable prototype", "Usability findings and fixes", "Handoff notes for developers"],
         timeline: "1–2 weeks",
-        from: 60000,
-        to: 90000,
+        from: 0,
+        to: 0,
       },
       {
         id: "product",
@@ -251,8 +252,8 @@ export const services: Service[] = [
         pitch: "End-to-end design for a complete product or a substantial redesign.",
         includes: ["Full journey and IA design", "High-fidelity UI for every screen", "Interactive prototype", "Usability testing sessions", "Responsive and mobile design", "Developer handoff and QA support"],
         timeline: "4–7 weeks",
-        from: 120000,
-        to: 200000,
+        from: 0,
+        to: 0,
       },
       {
         id: "system",
@@ -260,14 +261,14 @@ export const services: Service[] = [
         pitch: "A design system your team can build on without us in the room.",
         includes: ["Component library and tokens", "Patterns and usage rules", "Accessibility standards (WCAG)", "Documented responsive behaviour", "Team workshops and training", "Governance so it stays coherent"],
         timeline: "8–12 weeks",
-        from: 220000,
-        to: 400000,
+        from: 0,
+        to: 0,
       },
     ],
     addOns: [
-      { id: "research", name: "User research", note: "Interviews and a usability study with real people.", price: 60000 },
-      { id: "audit", name: "UX audit", note: "A prioritised, evidence-backed review of your existing product.", price: 35000 },
-      { id: "access", name: "Accessibility remediation", note: "WCAG 2.2 AA fixes with a verification pass.", price: 50000 },
+      { id: "research", name: "User research", note: "Interviews and a usability study with real people.", price: 0 },
+      { id: "audit", name: "UX audit", note: "A prioritised, evidence-backed review of your existing product.", price: 0 },
+      { id: "access", name: "Accessibility remediation", note: "WCAG 2.2 AA fixes with a verification pass.", price: 0 },
     ],
     notIncluded: [
       "Development and engineering",
@@ -315,8 +316,8 @@ export const services: Service[] = [
         pitch: "Positioning and messaging for a business that needs a clear answer to 'what do you do?'.",
         includes: ["Stakeholder interviews", "Competitive and audience review", "Positioning statement", "Messaging hierarchy", "Tone of voice guide", "Core website copy"],
         timeline: "2–3 weeks",
-        from: 60000,
-        to: 90000,
+        from: 0,
+        to: 0,
       },
       {
         id: "narrative",
@@ -324,8 +325,8 @@ export const services: Service[] = [
         pitch: "A full messaging system applied across the places customers meet you.",
         includes: ["Everything in Foundation", "Brand voice and editorial principles", "Website copy across key pages", "Email and campaign templates", "Social content pillars", "Sales and proposal language"],
         timeline: "4–6 weeks",
-        from: 120000,
-        to: 180000,
+        from: 0,
+        to: 0,
       },
       {
         id: "always-on",
@@ -333,14 +334,14 @@ export const services: Service[] = [
         pitch: "A retained engagement producing and publishing content every month.",
         includes: ["Quarterly strategy reset", "Monthly content production", "SEO-led topic research", "Publishing calendar", "Performance review and iteration", "Ongoing brand governance"],
         timeline: "Rolling, 3-month minimum",
-        from: 180000,
-        to: 300000,
+        from: 0,
+        to: 0,
       },
     ],
     addOns: [
-      { id: "website-copy", name: "Full website copy", note: "Every page researched, written and edited to a publishable standard.", price: 55000 },
-      { id: "video", name: "Video scripts", note: "Scripted and storyboarded for launch and social.", price: 40000 },
-      { id: "sprint", name: "Messaging sprint", note: "Two focused days to get to a usable position fast.", price: 40000 },
+      { id: "website-copy", name: "Full website copy", note: "Every page researched, written and edited to a publishable standard.", price: 0 },
+      { id: "video", name: "Video scripts", note: "Scripted and storyboarded for launch and social.", price: 0 },
+      { id: "sprint", name: "Messaging sprint", note: "Two focused days to get to a usable position fast.", price: 0 },
     ],
     notIncluded: [
       "Content production such as photography and video filming",
@@ -388,8 +389,8 @@ export const services: Service[] = [
         pitch: "A distinctive core identity for a new or early-stage brand.",
         includes: ["Logo suite and marks", "Colour and typography system", "Core brand guidelines", "Business card and stationery", "Social profile templates", "Source files and usage rules"],
         timeline: "3–4 weeks",
-        from: 80000,
-        to: 150000,
+        from: 0,
+        to: 0,
       },
       {
         id: "campaign",
@@ -397,8 +398,8 @@ export const services: Service[] = [
         pitch: "A campaign system built to run across digital, print and social.",
         includes: ["Campaign concept and art direction", "Key visual system", "Social cut-downs", "Print collateral", "Email and display templates", "Rollout guidance"],
         timeline: "4–6 weeks",
-        from: 90000,
-        to: 160000,
+        from: 0,
+        to: 0,
       },
       {
         id: "brand-system",
@@ -406,14 +407,14 @@ export const services: Service[] = [
         pitch: "A full identity that holds up across products, packaging and apparel.",
         includes: ["Full identity and logo suite", "Packaging design system", "Apparel and merchandise artwork", "Photography and art direction", "Brand standards manual", "Team training session"],
         timeline: "8–12 weeks",
-        from: 200000,
-        to: 350000,
+        from: 0,
+        to: 0,
       },
     ],
     addOns: [
-      { id: "apparel", name: "Apparel graphics", note: "Print-ready artwork and mockups for a clothing range.", price: 45000 },
-      { id: "packaging", name: "Packaging artwork", note: "Dielines, print files and 3D mockups.", price: 55000 },
-      { id: "mockups", name: "AI mockups", note: "Fast, realistic product mockups for concepts and social.", price: 20000 },
+      { id: "apparel", name: "Apparel graphics", note: "Print-ready artwork and mockups for a clothing range.", price: 0 },
+      { id: "packaging", name: "Packaging artwork", note: "Dielines, print files and 3D mockups.", price: 0 },
+      { id: "mockups", name: "AI mockups", note: "Fast, realistic product mockups for concepts and social.", price: 0 },
     ],
     notIncluded: [
       "Printing, fabrication and production costs",
