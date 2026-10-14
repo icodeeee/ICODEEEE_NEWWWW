@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getProjects } from "@/lib/data";
 import { services } from "@/lib/services";
+import { getSiteOrigin } from "@/lib/site-origin";
 
 /**
  * lastModified is only emitted when a real modification date is known. Reporting
@@ -8,7 +9,7 @@ import { services } from "@/lib/services";
  * which devalues the signal and causes needless re-crawling.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const base = getSiteOrigin();
   const staticRoutes = ["", "/work", "/services", "/process", "/about", "/contact", "/privacy"];
   const projects = await getProjects();
 

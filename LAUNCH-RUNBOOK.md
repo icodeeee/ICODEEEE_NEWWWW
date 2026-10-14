@@ -10,13 +10,15 @@
 Import this repository in Vercel and select `audit-fixes` as the production
 branch. The branch contains the current site, including the quote-request flow.
 
-## Required Vercel environment variables
+## Environment variables
 
-Set these for **Production** and **Preview**, then redeploy after changing them.
+The site can deploy without custom environment variables. Canonical URLs and the
+sitemap use Vercel's production domain automatically. Set the variables below
+for **Production** and **Preview** if the corresponding features are needed.
 
 | Variable | Purpose | Secret? |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Public origin used for canonical metadata and the sitemap. Set it to the Vercel domain first, then update it if a custom domain is connected. | No |
+| `NEXT_PUBLIC_SITE_URL` | Optional explicit public origin. Vercel's production domain is used when unset; set this only to override it. | No |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL for portfolio reads and server-side lead storage. | No |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase public/anon key for published portfolio reads. | No |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used to store enquiries and administer content. | **Yes** |
@@ -59,6 +61,6 @@ as a custom quote. Add real rates only after the studio confirms them.
 ## Custom domain
 
 The generated `*.vercel.app` domain can be used for the first deployment. If a
-custom domain is connected later, update `NEXT_PUBLIC_SITE_URL` in Vercel and
-redeploy so canonical links, Open Graph metadata, and `sitemap.xml` use that
-domain.
+custom domain is connected later, Vercel's production-domain environment value
+will be used for canonical links, Open Graph metadata, and `sitemap.xml`. Set
+`NEXT_PUBLIC_SITE_URL` only when you need to override that behavior.

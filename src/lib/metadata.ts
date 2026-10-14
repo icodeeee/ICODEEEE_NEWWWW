@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { getSiteOrigin } from "@/lib/site-origin";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+const siteUrl = getSiteOrigin();
 
 /**
  * Builds per-page social metadata.

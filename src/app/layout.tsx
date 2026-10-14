@@ -10,19 +10,18 @@ import { ConsentBanner } from "@/components/consent-banner";
 import { MetaPixel, MetaPixelServer } from "@/components/meta-pixel";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { StructuredData } from "@/components/structured-data";
+import { getSiteOrigin } from "@/lib/site-origin";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display" });
 
-// Canonical, OG and sitemap URLs all derive from this. It MUST be the real
-// public origin in production — a wrong value points every canonical tag at the
-// wrong host. Failing loudly here beats shipping that silently.
-const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-const siteUrl = (rawSiteUrl && /^https?:\/\//.test(rawSiteUrl) ? rawSiteUrl : "http://localhost:3000").replace(/\/$/, "");
+// Canonical, OG and sitemap URLs all derive from this. The origin helper uses
+// Vercel's production domain automatically when no explicit public URL is set.
+const siteUrl = getSiteOrigin();
 
 if (process.env.NODE_ENV === "production" && siteUrl.includes("localhost")) {
   console.warn(
-    "[metadata] NEXT_PUBLIC_SITE_URL is not set to a public origin. Canonicals, Open Graph URLs and the sitemap will point at localhost.",
+    "[metadata] No public origin is configured or provided by the host. Canonicals, Open Graph URLs and the sitemap will point at localhost.",
   );
 }
 
