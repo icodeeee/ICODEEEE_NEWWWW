@@ -63,14 +63,22 @@ async function insertLead(supabase: NonNullable<ReturnType<typeof adminClient>>,
   return withAttribution;
 }
 
-async function sendNotifications(lead: Record<string, string>) {
+async function sendNotifications(lead: Record<string, unknown>) {
   const key = process.env.RESEND_API_KEY; const from = process.env.LEADS_FROM_EMAIL; const to = process.env.LEADS_TO_EMAIL;
   if (!key || !from || !to) return;
-  const subject = `New iCodeee lead — ${lead.name}`;
+  const s = (v: unknown) => (typeof v === "string" ? v : "");
+  const subject = `New iCodeee lead — ${s(lead.name)}`;
   const escape = (v: string) => v.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
-  const html = `<h1>${escape(subject)}</h1><p><b>Email:</b> ${escape(lead.email)}</p><p><b>Company:</b> ${escape(lead.company || "—")}</p><p><b>Phone:</b> ${escape(lead.phone || "—")}</p><p><b>Focus:</b> ${escape(lead.project_type || "—")}</p><p><b>Budget:</b> ${escape(lead.budget || "—")}</p><p>${escape(lead.message).replace(/\n/g, "<br>")}</p>`;
+  const rows = [
+    ["Email", s(lead.email)], ["Company", s(lead.company)], ["Phone", s(lead.phone)],
+    ["Focus", s(lead.project_type)], ["Budget", s(lead.budget)],
+    // Funnel fields — only present when the lead came through the estimate funnel.
+    ["Package", s(lead.package_name)], ["Indicative range", s(lead.estimate_range)],
+    ["Free demo requested", lead.demo_requested ? "YES" : ""],
+  ].filter(([, v]) => v).map(([k, v]) => `<tr><td style="padding:2px 12px 2px 0;color:#666">${escape(k)}</td><td><b>${escape(v)}</b></td></tr>`).join("");
+  const html = `<h1>${escape(subject)}</h1><table style="border-collapse:collapse">${rows}</table><p style="white-space:pre-wrap">${escape(s(lead.message))}</p>`;
   await Promise.allSettled([
-    fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [to], reply_to: lead.email, subject, html }) }),
-    fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [lead.email], subject: "We received your iCodeee brief", html: `<p>Hi ${escape(lead.name)},</p><p>Thanks for getting in touch with iCodeee. We’ve received your brief and will get back to you shortly.</p>` }) }),
+    fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [to], reply_to: s(lead.email), subject, html }) }),
+    fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [s(lead.email)], subject: "We received your iCodeee brief", html: `<p>Hi ${escape(s(lead.name))},</p><p>Thanks for getting in touch with iCodeee. We’ve received your brief and will get back to you shortly.</p>` }) }),
   ]);
 }

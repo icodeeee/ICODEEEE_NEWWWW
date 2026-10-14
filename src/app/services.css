@@ -71,43 +71,7 @@
 
 .service-estimate{background:#f2f6fd}
 .service-estimate-lede{max-width:44rem;margin:0 0 clamp(2.5rem,5vw,4rem);color:#56657f;line-height:1.7}
-.estimator{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3vw,3rem);align-items:start}
-.estimator-options{display:grid;gap:.7rem;grid-column:1/-1}
-.estimator-option{display:grid;gap:.5rem;text-align:left;padding:1.35rem 1.5rem;border:1px solid #d5dfec;background:#fff;transition:border-color .25s,box-shadow .25s,transform .25s;cursor:pointer}
-.estimator-option:hover{border-color:#9dbdf0;transform:translateY(-2px)}
-.estimator-option.is-active{border-color:var(--blue);box-shadow:0 14px 34px rgba(9,104,255,.14)}
-.estimator-option-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
-.estimator-option-head b{font:600 1.35rem var(--font-display);letter-spacing:-.04em}
-.estimator-option-head i{font-style:normal;font-size:.82rem;font-weight:750;color:var(--blue);white-space:nowrap}
-.estimator-option-pitch{font-size:.86rem;line-height:1.55;color:#5b6980}
-.estimator-option-meta{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5b6577}
-
-.estimator-detail{background:#fff;border:1px solid var(--line);padding:1.8rem}
-.estimator-detail h3,.estimator-addons h3{margin:0 0 1.2rem;font-size:.7rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:#5b6577}
-.estimator-detail ul{margin:0;padding:0;list-style:none;display:grid;gap:.7rem}
-.estimator-detail li{display:flex;gap:.65rem;align-items:flex-start;font-size:.88rem;line-height:1.5;color:#33415c}
-.estimator-detail li svg{flex:none;margin-top:2px;color:#19a576}
-
-.estimator-addons{background:#fff;border:1px solid var(--line);padding:1.8rem}
-.estimator-addon-list{display:grid;gap:.6rem}
-.estimator-addon{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.85rem;padding:.85rem;border:1px solid #dfe6f1;cursor:pointer;transition:border-color .2s,background .2s}
-.estimator-addon:hover{border-color:#9dbdf0}
-.estimator-addon.is-active{border-color:var(--blue);background:rgba(9,104,255,.05)}
-.estimator-addon-input{position:absolute;opacity:0;width:0;height:0}
-.estimator-addon-input:focus-visible+.estimator-addon-mark{outline:2px solid var(--blue);outline-offset:2px}
-.estimator-addon-mark{display:grid;place-items:center;width:24px;height:24px;border:1px solid #c3cee0;color:#5c6a80;transition:background .2s,border-color .2s,color .2s}
-.estimator-addon.is-active .estimator-addon-mark{background:var(--blue);border-color:var(--blue);color:#fff}
-.estimator-addon-text{display:grid;gap:.15rem}
-.estimator-addon-text b{font-size:.9rem;font-weight:650}
-.estimator-addon-text span{font-size:.78rem;color:#5c6a80;line-height:1.45}
-.estimator-addon-price{font-size:.78rem;font-weight:750;color:var(--blue);white-space:nowrap}
-
-.estimator-total{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;margin-top:.5rem;padding:1.6rem 1.8rem;background:var(--ink);color:#fff}
-.estimator-total-label{margin:0 0 .3rem;font-size:.64rem;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:#8fa3c4}
-.estimator-total-value{margin:0;font:650 clamp(2rem,4vw,3.4rem)/1 var(--font-display);letter-spacing:-.055em;color:#fff}
-.estimator-total-note{margin:.45rem 0 0;font-size:.78rem;color:#9db2d4;max-width:36rem}
-.estimator-cta{background:var(--blue);flex:none}
-.estimator-disclaimer{grid-column:1/-1;margin:0;font-size:.78rem;line-height:1.6;color:#5c6a80;max-width:54rem}
+.estimator-disclaimer{margin:0;font-size:.78rem;line-height:1.6;color:#5c6a80;max-width:54rem}
 .service-entry-note{margin:clamp(2rem,4vw,3rem) 0 0;font-size:.92rem;color:#56657f}
 .service-entry-note a{color:var(--blue);font-weight:700;border-bottom:1px solid currentColor}
 
@@ -202,20 +166,96 @@
   .service-intro-body,.service-excluded{grid-template-columns:1fr;gap:2rem}
   .service-approach-grid,.service-others-grid{grid-template-columns:1fr}
   .approach-list{grid-template-columns:1fr}
-  .estimator{grid-template-columns:1fr}
-  .estimator-detail,.estimator-addons,.estimator-options,.estimator-total,.estimator-disclaimer{grid-column:1}
   .service-cta{flex-direction:column;align-items:flex-start}
   .page-hero-meta{gap:1rem 1.6rem}
 }
 @media(max-width:760px){
-  .estimator-total{flex-direction:column;align-items:flex-start}
-  .estimator-addon{grid-template-columns:auto 1fr;grid-template-areas:"mark text" "price price"}
-  .estimator-addon-mark{grid-area:mark}
-  .estimator-addon-text{grid-area:text}
-  .estimator-addon-price{grid-area:price;padding-left:2.1rem;margin-top:-.4rem}
   .page-hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.4rem}
   .page-hero-meta>div:last-child:nth-child(odd){grid-column:1/-1}
   .page-hero-meta dd{white-space:normal;font-size:1rem}
   .page-hero-actions{flex-direction:column;align-items:stretch}
   .page-hero-actions .button{justify-content:center}
+}
+/* ------------------------------------------------------------------
+   Gated estimate funnel.
+   ------------------------------------------------------------------ */
+.funnel{--funnel-accent:var(--cherry);margin:clamp(2rem,4vw,3.2rem) 0 0}
+.funnel:focus{outline:none}
+
+.funnel-progress{display:flex;flex-wrap:wrap;gap:.5rem 1.35rem;list-style:none;margin:0 0 1.75rem;padding:0 0 .95rem;border-bottom:1px solid #071d3520;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.funnel-progress-step{display:flex;align-items:center;gap:.5rem;color:#8b98aa}
+.funnel-progress-dot{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid #071d3530;color:#8b98aa;font-size:.62rem;flex:none}
+.funnel-progress-step.is-current{color:var(--ink)}
+.funnel-progress-step.is-current .funnel-progress-dot{border-color:var(--funnel-accent);background:var(--funnel-accent);color:#fff}
+.funnel-progress-step.is-done{color:var(--ink)}
+.funnel-progress-step.is-done .funnel-progress-dot{border-color:var(--ink);background:var(--ink);color:#fff}
+
+.funnel-panel:focus{outline:none}
+.funnel-step-title{margin:0 0 .4rem;font:600 clamp(1.35rem,2.6vw,2rem)/1.1 var(--font-display);letter-spacing:-.04em}
+.funnel-step-sub{margin:0 0 1.4rem;color:#5b6980;font-size:.92rem;line-height:1.6;max-width:52ch}
+
+.funnel-options{display:grid;gap:.75rem;margin-bottom:1.5rem}
+.funnel-option{display:grid;gap:.3rem;width:100%;text-align:left;padding:1.05rem 1.15rem;border:1px solid #071d3526;border-radius:8px;background:#fff;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
+.funnel-option:hover{border-color:#071d3547;transform:translateY(-1px)}
+.funnel-option.is-active{border-color:var(--funnel-accent);box-shadow:0 0 0 1px var(--funnel-accent),0 14px 30px -18px #071d3566}
+.funnel-option-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.funnel-option-head b{font:600 1.15rem/1.2 var(--font-display);letter-spacing:-.035em}
+.funnel-option-head i{font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--funnel-accent)}
+.funnel-option-pitch{color:#5b6980;font-size:.88rem;line-height:1.5}
+.funnel-option-meta{color:#8b98aa;font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+
+.funnel-includes{padding:1.1rem 1.2rem;background:#f4f7fa;border-radius:8px;margin-bottom:1.5rem}
+.funnel-includes h4{margin:0 0 .6rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5b6980}
+.funnel-includes ul{display:grid;gap:.45rem;list-style:none;margin:0;padding:0}
+.funnel-includes li{display:flex;gap:.55rem;align-items:flex-start;font-size:.88rem;line-height:1.5}
+.funnel-includes li svg{flex:none;margin-top:.22rem;color:var(--funnel-accent)}
+
+.funnel-cta{display:inline-flex;align-items:center;gap:.5rem;width:auto;cursor:pointer}
+.funnel-cta:disabled{opacity:.42;cursor:not-allowed}
+.funnel-gate-note{display:flex;align-items:center;gap:.4rem;margin:.85rem 0 0;color:#8b98aa;font-size:.76rem}
+.funnel-back{display:block;margin:.9rem auto 0;background:none;border:0;cursor:pointer;color:#5b6980;font-size:.78rem;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+.funnel-form{display:grid;gap:1rem;max-width:420px}
+.funnel-field{display:grid;gap:.4rem}
+.funnel-field label{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#5b6980}
+.funnel-optional{font-weight:500;letter-spacing:.04em;text-transform:none;color:#8b98aa}
+.funnel-field input{width:100%;padding:.8rem .9rem;border:1px solid #071d3533;border-radius:6px;background:#fff;font:inherit;font-size:.95rem;color:var(--ink)}
+.funnel-field input:focus-visible{outline:2px solid var(--cherry);outline-offset:1px;border-color:transparent}
+.funnel-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.funnel-questions{display:grid;gap:1.5rem;margin-bottom:1.6rem}
+.funnel-question{border:0;margin:0;padding:0}
+.funnel-question legend{padding:0;margin-bottom:.7rem;font:600 1.05rem/1.3 var(--font-display);letter-spacing:-.03em}
+.funnel-question-options{display:flex;flex-wrap:wrap;gap:.55rem}
+.funnel-chip{position:relative;display:inline-flex;cursor:pointer}
+.funnel-chip input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.funnel-chip span{display:inline-flex;padding:.6rem 1rem;border:1px solid #071d352e;border-radius:999px;font-size:.85rem;font-weight:600;transition:background .18s,border-color .18s,color .18s}
+.funnel-chip:hover span{border-color:#071d354d}
+.funnel-chip.is-active span{background:var(--ink);border-color:var(--ink);color:#fff}
+.funnel-chip input:focus-visible + span{outline:2px solid var(--cherry);outline-offset:2px}
+
+.funnel-result-package{margin:0 0 .3rem;color:#8b98aa;font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.funnel-result-value{margin:0 0 1.25rem;font:600 clamp(2.4rem,6vw,3.6rem)/1 var(--font-display);letter-spacing:-.05em;color:var(--ink)}
+.funnel-result-answers{display:grid;gap:.45rem;list-style:none;margin:0 0 1.25rem;padding:0}
+.funnel-result-answers li{display:flex;gap:.5rem;align-items:flex-start;color:#5b6980;font-size:.86rem;line-height:1.5}
+.funnel-result-answers li svg{flex:none;margin-top:.24rem;color:var(--cherry)}
+
+.funnel-result-status{display:flex;gap:.45rem;align-items:flex-start;margin:0 0 1.25rem;padding:.8rem .95rem;border-radius:6px;font-size:.85rem;line-height:1.5;background:#f4f7fa;color:#5b6980}
+.funnel-result-status.is-ok{background:#eaf5ee;color:#1d6b3d}
+.funnel-result-status.is-warn{background:#fdf1e7;color:#8a4b16}
+.funnel-result-status svg{flex:none;margin-top:.2rem}
+.funnel-result-status a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+
+.funnel-demo{padding:1.3rem 1.4rem;border:1px solid #071d3521;border-radius:9px;background:#f7fafc;margin-bottom:1.3rem}
+.funnel-demo h4{margin:0 0 .45rem;font:600 1.2rem/1.2 var(--font-display);letter-spacing:-.035em}
+.funnel-demo p{margin:0 0 1.1rem;color:#5b6980;font-size:.9rem;line-height:1.6;max-width:48ch}
+.funnel-result .estimator-disclaimer{margin:0}
+
+@media(max-width:600px){
+  .funnel-progress{gap:.4rem .9rem;font-size:.62rem}
+  .funnel-option-head{gap:.4rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .funnel-option{transition:none}
+  .funnel-option:hover{transform:none}
 }

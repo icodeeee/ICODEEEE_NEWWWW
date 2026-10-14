@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, Check, Minus } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
-import { ServiceEstimator } from "@/components/service-estimator";
+import { EstimateFunnel } from "@/components/estimate-funnel";
 import { ApproachSection } from "@/components/approach-section";
-import { getService, moneyRange, services } from "@/lib/services";
+import { getService, money, moneyRange, services } from "@/lib/services";
 import { pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
@@ -33,7 +33,6 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
 
   const others = services.filter((candidate) => candidate.slug !== service.slug);
   const entry = service.options[0];
-  const top = service.options[service.options.length - 1];
 
   return (
     <main id="main" className="page-main service-detail">
@@ -42,7 +41,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
         title={service.name}
         dense
         meta={[
-          { label: "Indicative range", value: moneyRange(entry.from, top.to) },
+          { label: "Indicative range", value: `from ${money(entry.from)}` },
           { label: "Fastest timeline", value: entry.timeline },
           { label: "Includes", value: `${service.options.length} packages · ${service.addOns.length} add-ons` },
         ]}
@@ -80,14 +79,13 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
       <section className="content-section service-estimate" id="estimate">
         <p className="eyebrow">Build your estimate</p>
         <h2>
-          Pick a starting point. <span>See roughly what it takes.</span>
+          Three questions. <span>Your rough range, free.</span>
         </h2>
         <p className="service-estimate-lede">
-          Every {service.name.toLowerCase()} engagement looks different. Choose the option closest to
-          what you have in mind and add anything else you already know you&apos;ll need — the estimate
-          updates as you go, and comes with you into the brief.
+          Pick a starting point, tell us where you are and what has to happen. We&apos;ll show the range
+          those answers land on — then build a free demo landing page from the same brief.
         </p>
-        <ServiceEstimator service={service} />
+        <EstimateFunnel service={service} />
         <p className="service-entry-note">
           Not sure where to start? A focused first conversation is free and usually settles it faster
           than any page online.{" "}
@@ -128,7 +126,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
               <h3>{candidate.name}</h3>
               <p>{candidate.line}</p>
               <i>
-                {moneyRange(candidate.options[0].from, candidate.options[0].to)} from
+                From {money(candidate.options[0].from)}
                 <ArrowUpRight size={17} />
               </i>
             </Link>
@@ -138,7 +136,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
 
       <section className="content-section service-cta">
         <div>
-          <p className="eyebrow">{entry.name} starts at {moneyRange(entry.from, entry.to)}</p>
+          <p className="eyebrow">{entry.name} starts at {money(entry.from)}</p>
           <h2>
             Tell us what you&apos;re <span>actually trying to fix.</span>
           </h2>
