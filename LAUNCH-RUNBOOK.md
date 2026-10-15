@@ -43,7 +43,7 @@ columns are missing, but attribution and the full project brief will be lost.
 
 ## Optional integrations
 
-- `RESEND_API_KEY`, `LEADS_FROM_EMAIL`, `LEADS_TO_EMAIL`: send lead notifications
+- `RESEND_API_KEY`, `LEADS_FROM_EMAIL`: send lead notifications to the public contact email
   and a receipt email. Without these, submissions can still be stored in
   Supabase, but no email notifications are sent.
 - `NEXT_PUBLIC_META_PIXEL_ID` and `META_CAPI_TOKEN`: enable Meta tracking. The

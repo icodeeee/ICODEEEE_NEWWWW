@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { adminClient, requireAdmin } from "@/lib/admin";
 import { leadSchema } from "@/lib/validation";
 import { newEventId, sendConversionsLead } from "@/lib/conversions";
+import { contact } from "@/lib/site";
 import { withAttribution } from "@/lib/utm";
 
 export async function POST(request: Request) {
@@ -64,7 +65,7 @@ async function insertLead(supabase: NonNullable<ReturnType<typeof adminClient>>,
 }
 
 async function sendNotifications(lead: Record<string, unknown>) {
-  const key = process.env.RESEND_API_KEY; const from = process.env.LEADS_FROM_EMAIL; const to = process.env.LEADS_TO_EMAIL;
+  const key = process.env.RESEND_API_KEY; const from = process.env.LEADS_FROM_EMAIL; const to = contact.email;
   if (!key || !from || !to) return;
   const s = (v: unknown) => (typeof v === "string" ? v : "");
   const subject = `New iCodeee lead — ${s(lead.name)}`;
