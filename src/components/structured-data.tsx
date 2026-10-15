@@ -1,8 +1,7 @@
 import Script from "next/script";
+import { contact } from "@/lib/site";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
-const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@icodeee.com";
-const phone = process.env.NEXT_PUBLIC_CONTACT_PHONE || "";
 
 /**
  * Structured data describing the business.
@@ -19,8 +18,8 @@ export function StructuredData() {
       url: siteUrl,
       description:
         "Independent digital studio providing website development, ecommerce, UI/UX design, content strategy and graphic design.",
-      email,
-      ...(phone ? { telephone: phone } : {}),
+      email: contact.email,
+      ...(contact.phone ? { telephone: contact.phone } : {}),
       areaServed: "IN",
       knowsAbout: [
         "Website Development",

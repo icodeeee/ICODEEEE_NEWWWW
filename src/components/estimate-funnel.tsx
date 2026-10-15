@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Lock } from "lucide-react";
 import type { Service } from "@/lib/services";
 import { money } from "@/lib/services";
+import { contact } from "@/lib/site";
 import {
   answerLines,
   briefMessage,
@@ -52,7 +53,7 @@ export function EstimateFunnel({ service }: { service: Service }) {
     `Requested scope: ${option.name}`,
     ...answerLines(answers),
   ].filter((line): line is string => Boolean(line)).join("\n");
-  const directEmail = `mailto:hello@icodeee.com?subject=${encodeURIComponent(`Quote request from ${details.name || "website"}`)}&body=${encodeURIComponent(directEmailBody)}`;
+  const directEmail = `mailto:${contact.email}?subject=${encodeURIComponent(`Quote request from ${details.name || "website"}`)}&body=${encodeURIComponent(directEmailBody)}`;
 
   const stepIndex = STEPS.findIndex((s) => s.id === step);
 

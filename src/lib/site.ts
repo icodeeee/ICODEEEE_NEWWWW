@@ -12,14 +12,13 @@ export const navItems = [
  * Direct contact routes, shown alongside the enquiry form so a visitor always has
  * a way to reach the studio — including when the form backend is unavailable.
  *
- * Phone and WhatsApp are env-driven and render only when set, because publishing
- * an unverified number would be worse than publishing none. The email address is
- * the one already used in the footer.
+ * Phone and WhatsApp are env-driven so each direct contact method can be
+ * enabled independently. The WhatsApp line is the preferred direct route.
  */
 export const contact = {
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@icodeee.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "icodeeee@gmail.com",
   phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
-  whatsapp: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || "",
+  whatsapp: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || "+91 7011609990",
   location: process.env.NEXT_PUBLIC_CONTACT_LOCATION || "",
 };
 
