@@ -56,3 +56,31 @@ Method and limitations:
 Earlier passes used an iframe harness at 1280/1440px. That was abandoned: the framed document's layout
 viewport stayed at the outer 800px regardless of the iframe width, so those captures were unreliable.
 The temporary harness was removed.
+
+## Case-study collections and features
+
+Added 15 October 2026 for project-specific case-study sections. Product and feature details are presented
+as published by each client; the links on the cards lead to the corresponding live pages.
+
+Slugsera product cards:
+
+- `slugsera-product-seedhe-pahad-se.webp`: https://www.slugsera.com/product/seedhe-pahad-se
+- `slugsera-product-slow-down.webp`: https://www.slugsera.com/product/slow-down
+- `slugsera-product-savage-tortoise.webp`: https://www.slugsera.com/product/savage-tortoise
+- `slugsera-product-let-the-moment-play.jpg`: https://www.slugsera.com/product/let-the-moment-play (official product image, converted to JPEG)
+- `slugsera-product-creator.webp`: https://www.slugsera.com/product/creator
+
+Awaesthetic Wear product cards, downloaded from the official WordPress media directory:
+
+- `aw-product-bunny-hoodie.jpg`: https://awaestheticwear.com/wp-content/uploads/2026/10/aw-bunny-hoodie-model-waist.jpg
+- `aw-product-dragon-tiger-hoodie.jpg`: https://awaestheticwear.com/wp-content/uploads/2026/10/aw-dragon-tiger-hoodie-model-waist-1.jpg
+- `aw-product-fire-hoodie.jpg`: https://awaestheticwear.com/wp-content/uploads/2026/10/aw-fire-hoodie-model-waist.jpg
+- `aw-product-love-hoodie.jpg`: https://awaestheticwear.com/wp-content/uploads/2026/10/aw-love-hoodie-model-waist-1.jpg
+
+Rupali Construction feature cards, downloaded from the official website:
+
+- `rupali-advantage-pricing.webp`: https://rupaliconstruction.com/images/whyus_pricing.webp
+- `rupali-advantage-payments.webp`: https://rupaliconstruction.com/images/whyus_payments.webp
+- `rupali-advantage-quality.webp`: https://rupaliconstruction.com/images/whyus_quality.webp
+- `rupali-advantage-tracking.webp`: https://rupaliconstruction.com/images/whyus_tracking.webp
+- `rupali-advantage-team.webp`: https://rupaliconstruction.com/images/whyus_team.webp

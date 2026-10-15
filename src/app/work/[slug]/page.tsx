@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight, MessageCircle } from "lucide-react";
 import { getProjectVisual } from "@/lib/project-visuals";
 import { getProject } from "@/lib/data";
 import { getStaticProjectSlugs } from "@/lib/static-projects";
 import { pageMetadata } from "@/lib/metadata";
 import { whatsappHref } from "@/lib/site";
-import { ProjectGallery } from "@/components/project-gallery";
+import { ProjectWebsiteSection } from "@/components/project-website-section";
 
 /**
  * Prerenders known projects and still allows CMS-added ones to render on demand.
@@ -60,12 +59,6 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
       <div className="case-intro-index"><span>PROJECT / {String(project.order).padStart(2, "0")}</span><span>{host}</span></div>
     </section>
 
-    {visual.image && <section className="case-site-capture" aria-label={`${project.name} live website capture`}>
-      <div className="case-site-bar"><span className="case-site-dots"><i /><i /><i /></span><span>{host || project.name}</span>{project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" aria-label={`Open ${project.name} website in a new tab`}>Open site <ArrowUpRight size={14} aria-hidden="true" /></a>}</div>
-      <div className="case-site-image"><Image src={visual.image} alt={visual.alt} fill priority sizes="(max-width: 900px) 100vw, 88vw" /></div>
-      <p>{visual.caption}</p>
-    </section>}
-
     <section className="case-overview" id="project-overview">
       <div className="case-overview-label"><span>01</span><p>The project</p></div>
       <div className="case-overview-copy">
@@ -76,12 +69,9 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
         {content.result && <p className="case-overview-description"><strong>Outcome:</strong> {content.result}</p>}
         {tags.length > 0 && <ul className="case-tags" aria-label="Services and technologies">{tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>}
       </div>
-      {editorial?.highlights && <div className="case-highlights">
-        {editorial.highlights.map((item, index) => <article key={item.title}><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.detail}</p></div></article>)}
-      </div>}
     </section>
 
-    <ProjectGallery name={project.name} images={visual.gallery} labels={visual.galleryLabels} />
+    {editorial?.section && <ProjectWebsiteSection section={editorial.section} projectName={project.name} liveUrl={project.live_url} />}
 
     <section className="case-endcap" id="project-links">
       <div><p className="eyebrow">Keep exploring</p><h2>See it in its <em>own world.</em></h2><p>Visit the live project, or tell us what you’re looking to build.</p></div>
