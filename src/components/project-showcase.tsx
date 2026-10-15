@@ -26,11 +26,13 @@ export function ProjectShowcase({ project, index }: { project: Project; index: n
           : <span className="project-image-fallback">{project.name}</span>}
       </span>
       <span className="work-tile-body">
+        <span className="work-tile-category">{project.category}</span>
         <span className="work-tile-head">
           <b>{project.name}</b>
           <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
         </span>
         <span className="work-tile-caption">{visual.caption}</span>
+        <span className="work-tile-story">Explore project story <span aria-hidden="true">↗</span></span>
       </span>
     </Link>
     {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="work-tile-live">{host}</a>}
