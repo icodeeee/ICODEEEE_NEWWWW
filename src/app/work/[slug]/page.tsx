@@ -48,7 +48,7 @@ export default async function CaseStudy({ params }: { params: Promise<{ slug: st
 
   return <main id="main" className="case-study">
     <section className="case-intro case-intro-editorial">
-      <div className="case-intro-top"><Link href="/work" className="case-back-link">← All projects</Link><span>{editorial?.eyebrow || `Selected project / ${project.category}`}</span></div>
+      <div className="case-intro-top"><Link href="/work" className="case-back-link">← All projects</Link></div>
       <p className="eyebrow">{editorial?.eyebrow || project.category}</p>
       <h1>{project.name}</h1>
       <p className="case-intro-deck">{intro}</p>
