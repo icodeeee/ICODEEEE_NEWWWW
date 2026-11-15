@@ -3,27 +3,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import type { Project } from "@/lib/types";
 import { getProjectVisual } from "@/lib/project-visuals";
 
-/**
- * Compact portfolio card.
- *
- * Deliberately one action per card. Previously each card carried a fake browser
- * bar with a preview control, a "Visit website" button and an "Explore the
- * project" link — four ways to leave the page, which read as clutter. The card
- * itself now goes to the case study, with the live site as one quiet link.
- */
-export function ProjectShowcase({ project, index }: { project: Project; index: number }) {
+/** Each project gets its own scroll reveal and gently moving preview. */
+export function ProjectShowcase({ project, index, calm = false }: { project: Project; index: number; calm?: boolean }) {
+  const ref = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
+  const still = calm || !!reducedMotion;
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], [28, -28]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.12, 1.02]);
   const visual = getProjectVisual(project);
   const host = project.live_url ? new URL(project.live_url).hostname.replace(/^www\./, "") : "";
 
-  return <article className="work-card-tile">
+  return <motion.article
+    ref={ref}
+    className={`work-card-tile portfolio-chapter ${index % 2 ? "portfolio-chapter-reverse" : ""}`}
+    initial={still ? false : "below"}
+    animate={still ? "visible" : undefined}
+    whileInView="visible"
+    viewport={{ once: true, amount: .15 }}
+    variants={{ below: { opacity: 0, y: 120, scale: .96 }, visible: { opacity: 1, y: 0, scale: 1 } }}
+    transition={{ duration: still ? 0 : 1.1, ease: [.22, 1, .36, 1] }}
+  >
     <Link href={`/work/${project.slug}`} className="work-tile-link">
       <span className="work-tile-visual">
+        <motion.span className="work-tile-media" style={{ y: still ? 0 : imageY, scale: still ? 1 : imageScale }}>
         {visual.image
-          ? <Image src={visual.image} alt={visual.alt} fill sizes="(max-width: 900px) 100vw, 33vw" />
+          ? <Image src={visual.image} alt={visual.alt} fill sizes="(max-width: 760px) 100vw, 60vw" />
           : <span className="project-image-fallback">{project.name}</span>}
+        </motion.span>
+        <span className="work-tile-image-label" aria-hidden="true">SELECTED WORK / {String(index + 1).padStart(2, "0")}</span>
+        <span className="work-tile-open" aria-hidden="true"><ArrowUpRight size={26} strokeWidth={1.3} /></span>
       </span>
       <span className="work-tile-body">
         <span className="work-tile-category">{project.category}</span>
@@ -32,11 +46,12 @@ export function ProjectShowcase({ project, index }: { project: Project; index: n
           <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
         </span>
         <span className="work-tile-caption">{visual.caption}</span>
-        <span className="work-tile-story">Explore project story <span aria-hidden="true">↗</span></span>
+        {project.services.length > 0 && <span className="work-tile-tags">{project.services.slice(0, 3).map(service => <span key={service}>{service}</span>)}</span>}
+        <span className="work-tile-story">Inside the project <span aria-hidden="true">↗</span></span>
       </span>
     </Link>
-    {project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="work-tile-live">{host}</a>}
-  </article>;
+    <div className="work-tile-footer"><span>PROJECT {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {project.category}</span>{project.live_url && <a href={project.live_url} target="_blank" rel="noreferrer" className="work-tile-live">{host} <ArrowUpRight size={13} aria-hidden="true" /></a>}</div>
+  </motion.article>;
 }
 
 export function ProjectCollection({ projects }: { projects: Project[] }) {

@@ -1,4 +1,3 @@
-import { ConversionHome } from "@/components/conversion-home";
-import { getProjects } from "@/lib/data";
+import { RedesignedHome } from "@/components/redesigned-home";
 
-export default async function Home() { return <ConversionHome projects={await getProjects()} />; }
+export default function Home() { return <RedesignedHome />; }
