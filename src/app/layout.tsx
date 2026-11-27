@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/site-header";
 import { Footer } from "@/components/footer";
 import { ConsentBanner } from "@/components/consent-banner";
 import { MetaPixel, MetaPixelServer } from "@/components/meta-pixel";
+import { GoogleAnalytics, GoogleAnalyticsServer } from "@/components/google-analytics";
 import { AttributionCapture } from "@/components/attribution-capture";
 import { StructuredData } from "@/components/structured-data";
 import { getSiteOrigin } from "@/lib/site-origin";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
     <body className={`${inter.variable} ${display.variable}`}>
       <MetaPixelServer />
+      <GoogleAnalyticsServer />
       <StructuredData />
       <a className="skip-link" href="#main">Skip to content</a>
       <SiteHeader />
@@ -59,6 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <Footer />
       <AttributionCapture />
       <MetaPixel />
+      <GoogleAnalytics />
       <ConsentBanner />
     </body>
   </html>;

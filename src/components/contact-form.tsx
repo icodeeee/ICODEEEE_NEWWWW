@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 import { contact, hasPhone, hasWhatsApp, phoneHref, whatsappHref } from "@/lib/site";
+import { trackLead } from "@/components/meta-pixel";
+import { trackGAEvent } from "@/components/google-analytics";
 
 const initial = { name: "", email: "", phone: "", company: "", website: "", project_type: "", budget: "", message: "", company_site: "" };
 const MIN_MESSAGE = 20;
@@ -45,6 +47,13 @@ export function ContactForm({ defaults }: { defaults?: { projectType?: string; m
       const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "We couldn’t send your message.");
+      if (data.eventId) trackLead(data.eventId);
+      trackGAEvent("generate_lead", {
+        event_category: "Contact",
+        event_label: form.project_type || "General Enquiry",
+        project_type: form.project_type,
+        budget: form.budget,
+      });
       setState("sent");
       setForm({ ...initial, project_type: defaults?.projectType ?? "" });
     } catch (err) {

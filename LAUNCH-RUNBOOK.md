@@ -25,6 +25,7 @@ for **Production** and **Preview** if the corresponding features are needed.
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL for portfolio reads and server-side lead storage. | No |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase public/anon key for published portfolio reads. | No |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used to store enquiries and administer content. | **Yes** |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 Measurement ID (e.g. `G-XXXXXXXXXX`). Consent-gated. | No |
 
 The application can render without Supabase, using its bundled portfolio
 fallback. Enquiry submissions cannot be stored until `SUPABASE_SERVICE_ROLE_KEY`
@@ -43,6 +44,7 @@ columns are missing, but attribution and the full project brief will be lost.
 
 ## Optional integrations
 
+- `NEXT_PUBLIC_GA_ID`: enable Google Analytics (GA4). Consent-gated and respects Google Consent Mode v2.
 - `RESEND_API_KEY`, `LEADS_FROM_EMAIL`: send lead notifications to the public contact email
   and a receipt email. Without these, submissions can still be stored in
   Supabase, but no email notifications are sent.

@@ -13,7 +13,7 @@ export default function Privacy() {
     <p>If you arrive from an advertisement, we store the campaign parameters in your browser (source, medium, campaign, and click identifiers) for up to 30 days, and attach them to your enquiry. This tells us which advertising produced a conversation. It does not identify you personally.</p>
 
     <h2>Analytics and advertising cookies</h2>
-    <p>We use the Meta Pixel and a first-party analytics tool to measure page views and enquiries. Nothing is loaded until you accept analytics cookies in the banner. If you decline, those requests are never made. You can change your choice at any time by clearing this site&apos;s local storage and reloading.</p>
+    <p>We use Google Analytics, the Meta Pixel and first-party analytics tools to measure page views and enquiries. Nothing is loaded until you accept analytics cookies in the banner. If you decline, those requests are never made. You can change your choice at any time by clearing this site&apos;s local storage and reloading.</p>
 
     <h2>Third parties</h2>
     <p>Our hosting and database providers process data on our behalf. Live website previews on our work page load the client site inside a sandboxed frame only when you click to preview.</p>

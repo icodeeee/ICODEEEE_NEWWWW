@@ -31,11 +31,11 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               // Next.js injects inline bootstrap scripts and styles.
-              `script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV === "development" ? "'unsafe-eval' " : ""}https://connect.facebook.net`,
+              `script-src 'self' 'unsafe-inline' ${process.env.NODE_ENV === "development" ? "'unsafe-eval' " : ""}https://connect.facebook.net https://www.googletagmanager.com`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.supabase.co https://connect.facebook.net https://api.resend.com",
+              "connect-src 'self' https://*.supabase.co https://connect.facebook.net https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
               "frame-src https://www.slugsera.com https://rupaliconstruction.com https://awaestheticwear.com https://stress-unwind.com",
               "frame-ancestors 'self'",
               "base-uri 'self'",
