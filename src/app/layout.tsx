@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     description: "Websites, ecommerce and design built to move businesses forward.",
   },
   robots: { index: true, follow: true },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
